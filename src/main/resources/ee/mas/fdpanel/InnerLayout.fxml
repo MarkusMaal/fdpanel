@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="454.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.InnerLayout">
+   <children>
+      <TabPane layoutX="73.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Uudised">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Kaustad">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ChoiceBox fx:id="usersComboBox" layoutX="14.0" layoutY="34.0" prefHeight="26.0" prefWidth="572.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="34.0" />
+                        <Label layoutX="10.0" layoutY="14.0" text="Vali kasutaja" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <FlowPane layoutX="14.0" layoutY="75.0" prefHeight="160.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="75.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onAllClicked" prefHeight="26.0" prefWidth="150.0" text="(kõik)">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onHelpClicked" prefHeight="26.0" prefWidth="150.0" text="Abi">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onVideosClicked" prefWidth="150.0" text="Minu videod">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onOtherClicked" prefWidth="150.0" text="Muud asjad">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onMusicClicked" prefWidth="150.0" text="Muusika">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onInstallableClicked" prefHeight="26.0" prefWidth="150.0" text="Paigaldatavad failid">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onPicsClicked" prefWidth="150.0" text="Pildid">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onPowerPointClicked" prefWidth="150.0" text="PowerPoint">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onPptTempsClicked" prefWidth="150.0" text="PowerPointi mallid">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onTextClicked" prefWidth="150.0" text="Tekst">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onWordClicked" prefWidth="150.0" text="Word">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                           </children>
+                        </FlowPane>
+                        <Label layoutX="14.0" layoutY="235.0" text="Globaalne" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="240.0" />
+                        <FlowPane layoutX="14.0" layoutY="260.0" prefHeight="142.0" prefWidth="571.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="260.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#onRootClicked" prefWidth="150.0" text="Juurkataloog">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onMasClicked" prefWidth="150.0" text="markuse asjad">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onHelpCenterClicked" prefWidth="150.0" text="Abi ja info">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onUsersClicked" prefWidth="150.0" text="Kasutajad">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onQAppsClicked" prefWidth="150.0" text="Kiirrakendused">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onLatestVidsClicked" prefWidth="150.0" text="Esiletõstetud videod">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onBatchClicked" prefWidth="150.0" text="Pakkfailid">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onOSClicked" prefWidth="150.0" text="Opsüsteemid">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#onGoClicked" prefWidth="150.0" text="Mine">
+                                 <FlowPane.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                           </children>
+                        </FlowPane>
+                     </children></AnchorPane>
+                </content>
+            </Tab>
+            <Tab text="Kiirrakendused">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+            </Tab>
+            <Tab text="Haldamine">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="413.0" prefWidth="600.0">
+                     <children>
+                        <GridPane layoutX="14.0" layoutY="14.0" prefHeight="87.0" prefWidth="284.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="136.0" minWidth="10.0" prefWidth="97.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="187.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="60.0" minHeight="7.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="36.0" minHeight="0.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Väljaanne" />
+                              <Label fx:id="editionLabel" text="Tundmatu" GridPane.columnIndex="1" />
+                              <Label text="Maht" GridPane.rowIndex="1" />
+                              <Label fx:id="capacityLabel" text="0GB (0GiB)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="Failisüsteem" GridPane.rowIndex="2" />
+                              <Label fx:id="filesystemLabel" text="RAW" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Haakepunkt" GridPane.rowIndex="3" />
+                              <Label fx:id="mountLabel" text="/mnt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Seade" GridPane.rowIndex="4" />
+                              <Label fx:id="deviceLabel" text="/dev/null" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                           </children>
+                        </GridPane>
+                        <Label layoutX="14.0" layoutY="14.0" text="Markuse mälupulk" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="10.0" layoutY="150.0" text="Seadistused" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="autorunCheck" layoutX="10.0" layoutY="196.0" mnemonicParsing="false" onAction="#toggleAutorun" text="Käivita see programm iga kord kui Markuse mälupulk on arvutisse sisestatud" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="196.0">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="fullscreenCheck" layoutX="10.0" layoutY="219.0" mnemonicParsing="false" onAction="#toggleFullScreen" text="Täisekraan" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="219.0">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="choosedevCheck" disable="true" layoutX="10.0" layoutY="243.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="234.0" selected="true" text="Muuda seadet andmete värskendamisel" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="243.0">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </CheckBox>
+                        <Label layoutX="10.0" layoutY="274.0" text="Haldamine" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="274.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <FlowPane alignment="BASELINE_CENTER" layoutX="1.0" layoutY="306.0" orientation="VERTICAL" prefHeight="112.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="311.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Muuda mälupulga nime">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Ebaturvaline PIN kood">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Muuda PIN koodi">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Väljaande teisendus">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Varundamishaldur">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Lisafunktsioonid">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#reloadDevices" prefWidth="165.0" text="Värskenda andmed">
+                                 <FlowPane.margin>
+                                    <Insets right="10.0" top="10.0" />
+                                 </FlowPane.margin>
+                              </Button>
+                           </children>
+                        </FlowPane>
+                        <Label layoutX="320.0" layoutY="10.0" text="Mälupulga juhtpaneel MP" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="514.0" layoutY="50.0" text="Versioon 0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
+                     </children></AnchorPane>
+                </content>
+            </Tab>
+            <Tab text="Statistika">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+            </Tab>
+            <Tab text="Arendamine">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

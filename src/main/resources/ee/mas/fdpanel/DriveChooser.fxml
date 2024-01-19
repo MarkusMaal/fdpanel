@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="114.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.DriveChooser">
+   <children>
+      <ChoiceBox fx:id="drivePicker" layoutX="132.0" layoutY="85.0" prefWidth="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+      <Label layoutX="14.0" layoutY="14.0" text="Valige seade, mida soovite kasutada" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Button defaultButton="true" layoutX="526.0" layoutY="77.0" onAction="#okClicked" prefHeight="26.0" prefWidth="100.0" text="_OK" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Button cancelButton="true" layoutX="379.0" layoutY="78.0" onAction="#exitClicked" prefHeight="26.0" prefWidth="100.0" text="V_älju" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+   </children>
+</AnchorPane>
