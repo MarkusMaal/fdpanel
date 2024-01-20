@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="454.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.InnerLayout">
    <children>
-      <TabPane fx:id="primaryTabPane" layoutX="73.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="primaryTabPane" layoutX="73.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Uudised">
             <content>
@@ -300,12 +300,12 @@
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Ebaturvaline PIN kood">
+                              <Button fx:id="unsecurePinButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Ebaturvaline PIN kood">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Muuda PIN koodi">
+                              <Button mnemonicParsing="false" onAction="#ChangePin" prefHeight="26.0" prefWidth="165.0" text="Muuda PIN koodi">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
@@ -355,12 +355,13 @@
                      <children>
                         <Label fx:id="vfStatusLabel" layoutX="14.0" layoutY="14.0" text="Verifile olek: UNLOADED" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <Button layoutX="181.0" layoutY="10.0" mnemonicParsing="false" onAction="#ReAttestateVfile" text="Kontrolli terviklikkust" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0" />
+                        <Button layoutX="10.0" layoutY="80.0" mnemonicParsing="false" onAction="#PinTest" text="PIN koodi test" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0" />
                      </children></AnchorPane>
                 </content>
             </Tab>
         </tabs>
       </TabPane>
-      <ProgressIndicator fx:id="spinner" prefHeight="423.0" prefWidth="600.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+      <ProgressIndicator fx:id="spinner" prefHeight="423.0" prefWidth="600.0" scaleShape="false" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <effect>
             <ColorAdjust brightness="-1.0" contrast="-1.0" hue="0.11" saturation="-1.0" />
          </effect>
@@ -371,6 +372,10 @@
             <Insets bottom="350.0" />
          </padding>
       </ProgressIndicator>
-      <Label fx:id="gettingInfoLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="152.0" prefHeight="33.0" prefWidth="600.0" text="Andmete kogumine..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="152.0" />
+      <Label fx:id="gettingInfoLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="152.0" prefHeight="33.0" prefWidth="600.0" text="Andmete kogumine..." textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="152.0">
+         <cursor>
+            <Cursor fx:constant="WAIT" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>

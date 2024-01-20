@@ -178,7 +178,32 @@ public class MainApp extends Application {
         this.primaryStage.setFullScreen(b);
     }
 
-    public int showDriveChooserDialog() throws InterruptedException {
+    public String showPinDialog(String message) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return ""; }
+            loader.setLocation(MainApp.class.getResource("PinEntry.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle(message);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            PinEntry controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            dialogStage.showAndWait();
+
+            return controller.getPin();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int showDriveChooserDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
 

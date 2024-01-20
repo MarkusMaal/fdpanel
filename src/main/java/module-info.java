@@ -9,6 +9,7 @@ module ee.mas.fdpanel {
     requires java.desktop;
     requires rtfparserkit;
     requires com.github.oshi;
+    requires jakarta.xml.bind;
 
     opens ee.mas.fdpanel to javafx.fxml;
     exports ee.mas.fdpanel;

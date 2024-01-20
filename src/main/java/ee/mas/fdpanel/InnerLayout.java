@@ -25,90 +25,63 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class InnerLayout {
-
     private MainApp mainApp;
-
     private String home = System.getProperty("user.home");
-
     private FlashDrive fd;
-
     @FXML
     private CheckBox autorunCheck;
-
     @FXML
     private Label editionLabel;
-
     @FXML
     private Label capacityLabel;
-
     @FXML
     private Label filesystemLabel;
-
     @FXML
     private Label mountLabel;
-
     @FXML
     private Label deviceLabel;
-
     @FXML
     private CheckBox fullscreenCheck;
-
     @FXML
     private CheckBox choosedevCheck;
-
     @FXML
     private ChoiceBox usersComboBox;
-
     @FXML
     private TextFlow rtfDisplay;
-
     @FXML
     private Label newsCounterLabel;
-
     @FXML
     private ListView<String> videoHighlights;
-
     @FXML
     private Button playButton;
-
     @FXML
     private ListView<String> quickApps;
-
     @FXML
     private ImageView qAppThumbnail;
-
     @FXML
     private Label qAppName;
-
     @FXML
     private Label qAppDescription;
-
     @FXML
     private Button qAppOpen;
-
     @FXML
     private Button qAppManage;
-
     @FXML
     private AnchorPane thumbnailParentNode;
-
     @FXML
     private Label versionLabel;
-
     @FXML
     private PieChart statChart;
-
     @FXML
     private Label vfStatusLabel;
-
     @FXML
     private ProgressIndicator spinner;
-
     @FXML
     private Label gettingInfoLabel;
-
     @FXML
     private TabPane primaryTabPane;
+    @FXML
+    private Button unsecurePinButton;
 
     public final ObservableList<String> videos = FXCollections.observableArrayList();
 
@@ -144,6 +117,12 @@ public class InnerLayout {
         choosedevCheck.setDisable(mainApp.drives.size() < 2);
         usersComboBox.setItems(FXCollections.observableList(fd.GetUsers()));
         usersComboBox.getSelectionModel().select(0);
+
+        if (this.fd.IsSecurePin()) {
+            unsecurePinButton.setText("Ebaturvaline PIN kood");
+        } else {
+            unsecurePinButton.setText("Loo turvaline PIN kood");
+        }
 
         this.newsIdx = 1;
 
@@ -450,6 +429,61 @@ public class InnerLayout {
             vfStatusLabel.setText("Verifile olek: NO_SUCH_ALGORITHM");
         } catch (IOException e) {
             vfStatusLabel.setText("Verifile olek: IO_EXCEPTION");
+        }
+    }
+
+    @FXML
+    private void PinTest() {
+        String enteredPin = mainApp.showPinDialog("Sisestage PIN kood kontrollimiseks");
+
+        try {
+            if (this.fd.VerifyPin(enteredPin)) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("PIN koodi kontroll");
+                alert.setHeaderText("Kood õige!");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Mälupulga juhtpaneel");
+                alert.setHeaderText("Vale PIN kood!");
+                alert.showAndWait();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Runtime error: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void ChangePin() {
+        // verify old PIN
+        String enteredPin = mainApp.showPinDialog("Sisestage vana PIN kood");
+        try {
+            if (!this.fd.VerifyPin(enteredPin)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Mälupulga juhtpaneel");
+                alert.setHeaderText("Vale PIN kood!");
+                alert.setContentText("Muudatusi ei tehtud");
+                alert.showAndWait();
+                return;
+            }
+            // generate new PIN
+            String newPin = mainApp.showPinDialog("Sisestage uus PIN kood");
+            if (mainApp.fd.SetPin(newPin)) {
+                this.fd = mainApp.fd;
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Mälupulga juhtpaneel");
+                alert.setHeaderText("PIN kood muudeti edukalt");
+                alert.setContentText("Uus PIN kood: " + newPin);
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Mälupulga juhtpaneel");
+                alert.setHeaderText("Koodi muutmine nurjus");
+                alert.setContentText("Palun proovige hiljem uuesti!");
+                alert.showAndWait();
+            }
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Runtime error: " + e.getMessage());
         }
     }
 

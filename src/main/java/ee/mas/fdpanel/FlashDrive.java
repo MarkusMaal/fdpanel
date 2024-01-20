@@ -13,6 +13,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.xml.bind.DatatypeConverter;
 
 public class FlashDrive {
     private String mount;
@@ -53,6 +54,10 @@ public class FlashDrive {
             this.fg = Color.rgb(Integer.parseInt(fg_str[0]), Integer.parseInt(fg_str[1]), Integer.parseInt(fg_str[2]));
         }
         this.ReloadPin();
+    }
+
+    public boolean IsSecurePin() {
+        return this.securePin;
     }
 
     private void ReloadPin() {
@@ -152,19 +157,46 @@ public class FlashDrive {
     }
 
     public String GetHash(String input) throws NoSuchAlgorithmException {
-        byte[] bytesOfStr = input.getBytes(StandardCharsets.UTF_8);
+        // we use MD5 here for backwards compatibility reasons
+        // the PIN code is kind of redundant anyway since a lot of this stuff
+        // can be done without the flash drive control panel
         MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] md5digest = md.digest(bytesOfStr);
-        return String.format("%X", ByteBuffer.wrap(md5digest).getLong());
+        md.update(input.getBytes(StandardCharsets.US_ASCII));
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
     }
 
     public String GetPin() {
         return this.pin;
     }
 
+    public boolean SetPin(String newPin) {
+        try {
+            if (this.securePin) {
+                newPin = this.GetHash(newPin);
+                File outputFileUnsecure = new File(this.mount + "/NTFS/config.sys");
+                PrintStream ptstr = new PrintStream(outputFileUnsecure);
+                Runtime.getRuntime().addShutdownHook(new Thread(ptstr::close));
+                ptstr.println("Ebaturvaline PIN kood keelatud");
+                ptstr.println("Insecure authentication code disabled");
+                ptstr.flush();
+            }
+            File outputFile = new File(this.mount + "/NTFS/" + (this.securePin?"spin":"config") + ".sys");
+            PrintStream printStr = null;
+            printStr = new PrintStream(outputFile);
+            Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
+            printStr.println(newPin);
+            printStr.flush();
+            this.pin = newPin;
+            return true;
+        } catch (FileNotFoundException | NoSuchAlgorithmException e) {
+            return false;
+        }
+    }
+
     public Boolean VerifyPin(String pin) throws NoSuchAlgorithmException {
         if (this.securePin) {
-            return this.pin.contains(GetHash(pin));
+            return this.pin.equals(GetHash(pin));
         } else {
             return pin.equals(this.pin);
         }
