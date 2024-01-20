@@ -2,8 +2,6 @@ package ee.mas.fdpanel;
 
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -13,17 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class MainApp extends Application {
     public Stage primaryStage;
@@ -34,24 +27,53 @@ public class MainApp extends Application {
     public FlashDrive fd;
 
     public String version = "0.1";
-
     public boolean isMas = false;
 
     public List<FlashDrive> drives = new ArrayList<>();
+    private String alphabet = "abcdefghijklmnopqrstuvwxyz.,-/\\_";
+
+    public String platform = "";
 
     @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
-        this.primaryStage = stage;
-        this.primaryStage.setTitle("Markuse mälupulk");
+    public void start(Stage stage) throws IOException, InterruptedException, NoSuchAlgorithmException {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Mälupulga juhtpaneel");
+        alert.setHeaderText("Platvormi viga");
+        switch (this.platform = new Verifile(System.getProperty("user.home") + this.alphabet.charAt(29) + this.alphabet.charAt(26) + "sbm".replace("m", "x").replace("s", "m").replace("b", "a").replace("x", "s")).MakeAttestation()) {
+            case "TAMPERED":
+                alert.setContentText("Markuse arvuti asjad pole sellesse seadmesse õigesti paigaldatud. Palun kasutage juurutamiseks sobivat tööriista. Mälupulga juhtpaneel ei tööta valesti juurutatud seadmetes.\n\nTehniline info: VFILE_TAMPERED");
+                alert.showAndWait();
+                System.exit(1);
+                break;
+            case "LEGACY":
+                alert.setContentText("Markuse arvuti asjad ei ole selles seadmes juurutatud Linux-i juurutamise tööriistaga. Palun kasutage juurutamiseks sobivat tööriista. Mälupulga juhtpaneel ei tööta valesti juurutatud seadmetes.\n\nTehniline info: VFILE_LEGACY");
+                alert.showAndWait();
+                System.exit(2);
+                break;
+            case "FAILED":
+                alert.setContentText("Süsteemi püsivuskontroll nurjus. Markuse mälupulga juhtpaneel ei tööta seadmetes, kus pole võimalik sooritada püsivuskontrolli.\n\nTehniline info: VFILE_FAILED");
+                alert.showAndWait();
+                System.exit(3);
+                break;
+            case "FOREIGN":
+                alert.setContentText("Pole tegemist Markuse arvutiga. Programmi funktsionaalsus on piiratud.\n\nTehniline info: VFILE_FOREIGN");
+                alert.showAndWait();
+                break;
+        }
+        if (!this.platform.isEmpty()) {
+            this.primaryStage = stage;
+            this.primaryStage.setTitle("Markuse mälupulk");
+        }
         findFlashDrives();
         if (!this.drives.isEmpty()) {
             int idx = 0;
             if (this.drives.size() > 1) {
                 idx = showDriveChooserDialog();
             }
+            if (idx == -1) { idx = 0; }
             fd = this.drives.get(idx);
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mälupulga juhtpaneel");
             alert.setHeaderText("Ühtegi mälupulka ei leitud");
             alert.setContentText("Sisestage ja haakige mälupulk, seejärel vajutage \"OK\", et jätkata.");
@@ -159,6 +181,8 @@ public class MainApp extends Application {
     public int showDriveChooserDialog() throws InterruptedException {
         try {
             FXMLLoader loader = new FXMLLoader();
+
+            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return -1; }
             loader.setLocation(MainApp.class.getResource("DriveChooser.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -178,7 +202,7 @@ public class MainApp extends Application {
             dialogStage.showAndWait();
 
             return controller.getSelectedDrive();
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
             return 0;
         }
@@ -192,5 +216,15 @@ public class MainApp extends Application {
 
     public void setMas(boolean val) {
         this.isMas = val;
+    }
+
+    private static byte[] convertListToByteArray(List<Byte> byteList) {
+        byte[] byteArray = new byte[byteList.size()];
+
+        for (int i = 0; i < byteList.size(); i++) {
+            byteArray[i] = byteList.get(i);
+        }
+
+        return byteArray;
     }
 }

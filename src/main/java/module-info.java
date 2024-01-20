@@ -8,6 +8,7 @@ module ee.mas.fdpanel {
     requires java.datatransfer;
     requires java.desktop;
     requires rtfparserkit;
+    requires com.github.oshi;
 
     opens ee.mas.fdpanel to javafx.fxml;
     exports ee.mas.fdpanel;

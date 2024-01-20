@@ -1,30 +1,20 @@
 package ee.mas.fdpanel;
 
 import com.rtfparserkit.converter.text.StringTextConverter;
-import com.rtfparserkit.parser.*;
-import com.rtfparserkit.parser.standard.StandardRtfParser;
-import com.rtfparserkit.parser.RtfStringSource;
+import com.rtfparserkit.parser.RtfStreamSource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-
-import java.awt.*;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 public class InnerLayout {
 
@@ -114,6 +104,7 @@ public class InnerLayout {
     }
     @FXML
     private void initialize() throws IOException {
+
         FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
         String strLine = br.readLine();
@@ -122,8 +113,7 @@ public class InnerLayout {
         autorunCheck.selectedProperty().set(strLine.contains("AutoRun=true"));
     }
 
-    public void GatherInfo() throws IOException {
-
+    public void GatherInfo() throws IOException { if (mainApp.platform.isEmpty()) { return; }
         editionLabel.setText(fd.GetEdition());
         mountLabel.setText(fd.GetMount());
         capacityLabel.setText(fd.GetDiskSize());
@@ -146,7 +136,7 @@ public class InnerLayout {
         LoadNews(newsIdx);
         versionLabel.setText(String.format("Versioon %s", mainApp.version));
 
-        long batch_size = fd.CalcDirSize("/Pakkfailid");
+        long batch_size = fd.CalcDirSize("/Pakkfailid") + fd.CalcDirSize("/Batch");
         long mas_size = fd.CalcDirSize("/markuse asjad/markuse asjad");
         long os_size = fd.CalcDirSize("/multiboot");
         long QApps_size = fd.CalcDirSize("/markuse asjad/Kiirrakendused");
@@ -169,6 +159,7 @@ public class InnerLayout {
 
     private void LoadNews(int idx) throws IOException {
         newsCounterLabel.setText("Uudis " + idx + "/5");
+        if (mainApp.platform.isEmpty()) { return; }
         rtfDisplay.getChildren().clear();
         InputStream is = new FileInputStream(fd.GetMount() + "/E_INFO/uudis" + idx + ".rtf");
         StringTextConverter converter = new StringTextConverter();
@@ -183,6 +174,7 @@ public class InnerLayout {
     @FXML
     private void refreshTopic() {
         try {
+            if (mainApp.platform.isEmpty()) { return; }
             LoadNews(this.newsIdx);
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -228,6 +220,7 @@ public class InnerLayout {
     @FXML
     private void reloadDevices() throws InterruptedException {
         try {
+            if (mainApp.platform.isEmpty()) { return; }
             mainApp.ReloadDevices(choosedevCheck.isSelected());
             this.fd = mainApp.fd;
             this.GatherInfo();
@@ -244,11 +237,13 @@ public class InnerLayout {
     @FXML
     private void toggleAutorun() {
         try {
-            String outvalue = autorunCheck.selectedProperty().get() ? "true" : "false";
-            PrintStream printStr = new PrintStream(new File(this.home + "/.mas/settings2.sf"));
-            Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
-            printStr.println("AutoRun=" + outvalue);
-            printStr.flush();
+            if (mainApp.platform.equals("VERIFIED")) {
+                String outvalue = autorunCheck.selectedProperty().get() ? "true" : "false";
+                PrintStream printStr = new PrintStream(new File(this.home + "/.mas/settings2.sf"));
+                Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
+                printStr.println("AutoRun=" + outvalue);
+                printStr.flush();
+            }
         } catch (IOException ioe) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Seadistuse muutmine");
@@ -266,6 +261,7 @@ public class InnerLayout {
 
     private void openUsrFolder(String subdir) {
         try {
+            if (mainApp.platform.isEmpty()) { return; }
             Runtime r = Runtime.getRuntime();
             if (usersComboBox.getSelectionModel().getSelectedItem() != null) {
                 r.exec("xdg-open file://" + fd.GetMount() + "/markuse%20asjad/markuse%20asjad/" + usersComboBox.getSelectionModel().getSelectedItem().toString().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
@@ -310,6 +306,7 @@ public class InnerLayout {
 
     private void openGlobalFolder(String subdir) {
         try {
+            if (mainApp.platform.isEmpty()) { return; }
             Runtime r = Runtime.getRuntime();
             r.exec("xdg-open file://" + fd.GetMount().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
         } catch (IOException e) {
@@ -319,6 +316,7 @@ public class InnerLayout {
 
     private void openFile(String filename, String... pref) {
         try {
+            if (mainApp.platform.isEmpty()) { return; }
             String prefix = pref.length > 0 ? pref[0] : "xdg-open";
             Runtime r = Runtime.getRuntime();
             String cmd = prefix + " file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20");
@@ -360,7 +358,8 @@ public class InnerLayout {
     }
 
     @FXML
-    private void onChangeQAppSelection() {
+    private void onChangeQAppSelection() throws NoSuchAlgorithmException, IOException {
+        if (!mainApp.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
         if (!quickApps.getSelectionModel().getSelectedIndices().isEmpty()) {
             qAppName.setText(quickApps.getSelectionModel().getSelectedItem());
             String uri = "file://" + (fd.GetMount() + "/markuse asjad/Kiirrakendused/" + qAppName.getText() + "/" + qAppName.getText() + "ScreenShot.bmp").replaceAll(" ", "%20");
@@ -377,10 +376,11 @@ public class InnerLayout {
     }
 
     @FXML
-    private void onQAppOpenClicked() throws IOException {
+    private void onQAppOpenClicked() throws IOException, NoSuchAlgorithmException {
         String appName = qAppName.getText().replace(" (Wine)", "");
         String uri = "";
         boolean wine = !appName.equals(qAppName.getText());
+        if (!mainApp.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
         if (wine) {
             uri = "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Portable.exe";
             openFile(uri, "wine");
