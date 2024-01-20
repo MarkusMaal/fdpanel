@@ -300,7 +300,7 @@
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button fx:id="unsecurePinButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="165.0" text="Ebaturvaline PIN kood">
+                              <Button fx:id="unsecurePinButton" mnemonicParsing="false" onAction="#UnsecureConversion" prefHeight="26.0" prefWidth="165.0" text="Ebaturvaline PIN kood">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>

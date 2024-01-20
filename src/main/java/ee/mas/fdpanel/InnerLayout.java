@@ -17,10 +17,7 @@ import javafx.scene.text.TextFlow;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -453,6 +450,57 @@ public class InnerLayout {
         }
     }
 
+    private void DisplayNewPin(String newPin) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Mälupulga juhtpaneel");
+        alert.setHeaderText("PIN kood muudeti edukalt");
+        alert.setContentText("Uus PIN kood: " + newPin);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void UnsecureConversion() throws NoSuchAlgorithmException {
+        boolean correctPin = this.fd.VerifyPin(mainApp.showPinDialog("Sisestage praegune PIN kood"));
+        if (!correctPin) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Vale PIN kood!");
+            alert.showAndWait();
+            return;
+        }
+        ButtonType yes = new ButtonType("Jah", ButtonBar.ButtonData.OK_DONE);
+        ButtonType no = new ButtonType("Ei", ButtonBar.ButtonData.CANCEL_CLOSE);
+        if (this.fd.IsSecurePin()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Kas olete kindel, et soovite välja lülitada turvalise PIN koodi ja üle minna lihttekstilisele koodile? Ebaturvaline PIN kood on vajalik ainult tagasiühilduvuseks vanemate mälupulga haldamise programmidega.", no, yes);
+            alert.setTitle("Ebaturvaline PIN kood");
+            alert.setHeaderText("Hoiatus");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.orElse(yes) == no) {
+                return;
+            }
+            String newPin = mainApp.showPinDialog("Sisestage uus või sama PIN kood");
+            if (mainApp.fd.ConvertInsecure(newPin)) {
+                this.fd = mainApp.fd;
+                DisplayNewPin(newPin);
+                this.unsecurePinButton.setText("Loo turvaline PIN kood");
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Kas olete kindel, et soovite välja üle minna turvalisele PIN koodile? Selle tegevuse tagajärjel ei saa seda mälupulka hallata vanemate programmidega nn mälupulga universaalprogrammiga..", no, yes);
+            alert.setTitle("Loo turvaline PIN kood");
+            alert.setHeaderText("Hoiatus");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.orElse(yes) == no) {
+                return;
+            }
+            String newPin = mainApp.showPinDialog("Sisestage uus või sama PIN kood");
+            if (mainApp.fd.ConvertSecure(newPin)) {
+                this.fd = mainApp.fd;
+                DisplayNewPin(newPin);
+                this.unsecurePinButton.setText("Ebaturvaline PIN kood");
+            }
+        }
+    }
+
     @FXML
     private void ChangePin() {
         // verify old PIN
@@ -470,11 +518,7 @@ public class InnerLayout {
             String newPin = mainApp.showPinDialog("Sisestage uus PIN kood");
             if (mainApp.fd.SetPin(newPin)) {
                 this.fd = mainApp.fd;
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Mälupulga juhtpaneel");
-                alert.setHeaderText("PIN kood muudeti edukalt");
-                alert.setContentText("Uus PIN kood: " + newPin);
-                alert.showAndWait();
+                DisplayNewPin(newPin);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Mälupulga juhtpaneel");

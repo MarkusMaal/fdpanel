@@ -26,7 +26,7 @@ public class MainApp extends Application {
 
     public FlashDrive fd;
 
-    public String version = "0.1";
+    public String version = "0.2";
     public boolean isMas = false;
 
     public List<FlashDrive> drives = new ArrayList<>();

@@ -170,6 +170,15 @@ public class FlashDrive {
         return this.pin;
     }
 
+    public boolean ConvertInsecure(String newPin) {
+        this.securePin = false;
+        return this.SetPin(newPin);
+    }
+    public boolean ConvertSecure(String newPin) {
+        this.securePin = true;
+        return this.SetPin(newPin);
+    }
+
     public boolean SetPin(String newPin) {
         try {
             if (this.securePin) {
