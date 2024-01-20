@@ -178,6 +178,32 @@ public class MainApp extends Application {
         this.primaryStage.setFullScreen(b);
     }
 
+    public String showInputBox(String topText) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return ""; }
+            loader.setLocation(MainApp.class.getResource("InputBox.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("Mälupulga juhtpaneel");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            InputBox controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setHeader(topText);
+            dialogStage.showAndWait();
+
+            return controller.getValue();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String showPinDialog(String message) {
         try {
             FXMLLoader loader = new FXMLLoader();

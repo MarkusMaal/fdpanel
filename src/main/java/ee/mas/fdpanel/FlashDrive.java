@@ -179,6 +179,22 @@ public class FlashDrive {
         return this.SetPin(newPin);
     }
 
+    public void SetName(String newName) {
+        try {
+            File outputFileUnsecure = new File(this.mount + "/autorun.inf");
+            PrintStream ptstr = new PrintStream(outputFileUnsecure, "ISO-8859-15");
+            Runtime.getRuntime().addShutdownHook(new Thread(ptstr::close));
+            ptstr.print("[Autorun]\r\n");
+            ptstr.print("label=" + newName + "\r\n");
+            ptstr.print("\r\n");
+            ptstr.print("[Autorun.Amd64]\r\n");
+            ptstr.print("label=" + newName + "\r\n");
+            ptstr.flush();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean SetPin(String newPin) {
         try {
             if (this.securePin) {

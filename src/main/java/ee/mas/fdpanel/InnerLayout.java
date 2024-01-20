@@ -531,6 +531,25 @@ public class InnerLayout {
         }
     }
 
+    @FXML
+    private void SetName() {
+        boolean correctPin = false;
+        try {
+            correctPin = this.fd.VerifyPin(mainApp.showPinDialog("Sisestage praegune PIN kood"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        if (!correctPin) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Vale PIN kood!");
+            alert.showAndWait();
+            return;
+        }
+        String flashName = mainApp.showInputBox("Sisesta uus mälupulga nimi");
+        this.fd.SetName(flashName);
+    }
+
     public class GetSizeTask extends Task<HashMap<String, Long>> {
         final FlashDrive fd;
 
