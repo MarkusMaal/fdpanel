@@ -7,6 +7,7 @@ module ee.mas.fdpanel {
     requires org.kordamp.bootstrapfx.core;
     requires java.datatransfer;
     requires java.desktop;
+    requires rtfparserkit;
 
     opens ee.mas.fdpanel to javafx.fxml;
     exports ee.mas.fdpanel;

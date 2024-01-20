@@ -1,11 +1,17 @@
 package ee.mas.fdpanel;
 
+import com.rtfparserkit.converter.text.StringTextConverter;
+import com.rtfparserkit.parser.*;
+import com.rtfparserkit.parser.standard.StandardRtfParser;
+import com.rtfparserkit.parser.RtfStringSource;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 
 import java.awt.*;
@@ -51,6 +57,22 @@ public class InnerLayout {
     @FXML
     private ChoiceBox usersComboBox;
 
+    @FXML
+    private TextFlow rtfDisplay;
+
+    @FXML
+    private Label newsCounterLabel;
+
+    @FXML
+    private ListView<String> videoHighlights;
+
+    @FXML
+    private Button playButton;
+
+    public final ObservableList<String> videos = FXCollections.observableArrayList();
+
+    private int newsIdx = 1;
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
@@ -77,6 +99,69 @@ public class InnerLayout {
         choosedevCheck.setDisable(mainApp.drives.size() < 2);
         usersComboBox.setItems(FXCollections.observableList(fd.GetUsers()));
         usersComboBox.getSelectionModel().select(0);
+        this.newsIdx = 1;
+        this.videos.addAll(this.fd.GetVideos());
+        videoHighlights.setItems(this.videos);
+        playButton.setDisable(true);
+        LoadNews(newsIdx);
+    }
+
+    private void LoadNews(int idx) throws IOException {
+        newsCounterLabel.setText("Uudis " + idx + "/5");
+        rtfDisplay.getChildren().clear();
+        InputStream is = new FileInputStream(fd.GetMount() + "/E_INFO/uudis" + idx + ".rtf");
+        StringTextConverter converter = new StringTextConverter();
+        converter.convert(new RtfStreamSource(is));
+        String extractedText = converter.getText();
+        for (String line: extractedText.split("\n")) {
+            Text t =  new Text(line + "\n");
+            rtfDisplay.getChildren().add(t);
+        }
+    }
+
+    @FXML
+    private void refreshTopic() {
+        try {
+            LoadNews(this.newsIdx);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Uudise avamine nurjus");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private void nextTopic() {
+        try {
+            this.newsIdx ++;
+            if (this.newsIdx > 5) {
+                this.newsIdx = 1;
+            }
+            LoadNews(this.newsIdx);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Uudise avamine nurjus");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private void previousTopic() {
+        try {
+            this.newsIdx --;
+            if (this.newsIdx < 1) {
+                this.newsIdx = 5;
+            }
+            LoadNews(this.newsIdx);
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Uudise avamine nurjus");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -171,6 +256,15 @@ public class InnerLayout {
         }
     }
 
+    private void openFile(String filename) {
+        try {
+            Runtime r = Runtime.getRuntime();
+            r.exec("xdg-open file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @FXML
     private void onRootClicked() {openGlobalFolder("");}
     @FXML
@@ -189,4 +283,15 @@ public class InnerLayout {
     private void onOSClicked() {openGlobalFolder("multiboot");}
     @FXML
     private void onGoClicked() {openGlobalFolder("markuse asjad/markuse asjad/Mine");}
+
+    @FXML
+    private void enableDisablePlayButton() {
+        playButton.setDisable(videoHighlights.getSelectionModel().getSelectedIndices().isEmpty());
+    }
+
+    @FXML
+    private void playVideo() {
+        String fileName = videoHighlights.getSelectionModel().getSelectedItem();
+        openFile("/Markuse_videod/" + fileName);
+    }
 }

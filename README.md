@@ -4,7 +4,7 @@ Spetsiaalselt Linux-ile loodud versioon Markuse mälupulga juhtpaneelist.
 ## Planeeritud funktsionaalsus
 Siin on list funktsionaalsusest, mida ma planeerin lisada. Enamik neist on lihtsalt portimised Windowsi versioonist.
 
-- Uudised vahekaart (TBD)
+- Uudised vahekaart
     - Võimaldab lugeda erinevaid "uudised" Markuse asjade kohta, mis on talletatud mälupulgal
     - Kuvab esiletõstetud videod ja võimaldab neid esitada
 - Kiirrakendused vahekaart (TBD)

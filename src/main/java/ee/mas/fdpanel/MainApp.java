@@ -45,8 +45,12 @@ public class MainApp extends Application {
             }
             fd = this.drives.get(idx);
         } else {
-            System.out.println("No flash drives detected!");
-            System.exit(0);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Ühtegi mälupulka ei leitud");
+            alert.setContentText("Sisestage ja haakige mälupulk, seejärel vajutage \"OK\", et jätkata.");
+            alert.showAndWait();
+            ReloadDevices(true);
         }
         showFirstForm();
     }
@@ -55,7 +59,7 @@ public class MainApp extends Application {
         this.drives.clear();
         int idx = 0;
         findFlashDrives();
-        if (chooseDev) {
+        if (chooseDev && (this.drives.size() > 1)) {
             idx = showDriveChooserDialog();
         } else {
             for (int i = 0; i < this.drives.size(); i++) {
@@ -67,8 +71,12 @@ public class MainApp extends Application {
         if (!this.drives.isEmpty()) {
             fd = this.drives.get(idx);
         } else {
-            System.out.println("No flash drives detected!");
-            System.exit(0);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Ühtegi mälupulka ei leitud");
+            alert.setContentText("Sisestage ja haakige mälupulk, seejärel vajutage \"OK\", et jätkata.");
+            alert.showAndWait();
+            ReloadDevices(chooseDev);
         }
     }
 

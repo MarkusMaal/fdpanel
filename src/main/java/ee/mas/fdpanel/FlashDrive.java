@@ -160,5 +160,26 @@ public class FlashDrive {
         return fldrs;
     }
 
+    public List<String> GetVideos() {
+        DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+            @Override
+            public boolean accept(Path file) throws IOException {
+                return !Files.isDirectory(file) && file.getFileName().toString().contains(". ");
+            }
+        };
+
+        List<String> fldrs = new ArrayList<>();
+        Path dir = FileSystems.getDefault().getPath(this.mount + "/Markuse_videod/");
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, filter)) {
+            for (Path path : stream) {
+                // Iterate over the paths in the directory and print filenames
+                fldrs.add(String.valueOf(path.getFileName()));
+            }
+        } catch (IOException e) {
+            return fldrs;
+        }
+        return fldrs;
+    }
+
 
 }
