@@ -244,7 +244,6 @@ public class FlashDrive {
 
     public long CalcDirSize(String dirName) {
         String dir = this.mount + dirName;
-        System.out.print("Calculating size for " + dir);
         return this.CalculateFileSize(new File(dir));
     }
 
@@ -252,7 +251,6 @@ public class FlashDrive {
         long fileSize = 0L;
         boolean isSymbolicLink = Files.isSymbolicLink(file.toPath());
         if(file.isDirectory() && !isSymbolicLink) {
-            System.out.print("\rCalculating size for " + file.getName());
             File[] children = file.listFiles();
             for(File child : children != null ? children : new File[0]) {
                 fileSize += CalculateFileSize(child);

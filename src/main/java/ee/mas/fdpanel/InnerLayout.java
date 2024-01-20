@@ -2,8 +2,10 @@ package ee.mas.fdpanel;
 
 import com.rtfparserkit.converter.text.StringTextConverter;
 import com.rtfparserkit.parser.RtfStreamSource;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
@@ -15,6 +17,12 @@ import javafx.scene.text.TextFlow;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class InnerLayout {
 
@@ -90,6 +98,18 @@ public class InnerLayout {
     @FXML
     private PieChart statChart;
 
+    @FXML
+    private Label vfStatusLabel;
+
+    @FXML
+    private ProgressIndicator spinner;
+
+    @FXML
+    private Label gettingInfoLabel;
+
+    @FXML
+    private TabPane primaryTabPane;
+
     public final ObservableList<String> videos = FXCollections.observableArrayList();
 
     public final ObservableList<String> quick_apps = FXCollections.observableArrayList();
@@ -114,47 +134,77 @@ public class InnerLayout {
     }
 
     public void GatherInfo() throws IOException { if (mainApp.platform.isEmpty()) { return; }
-        editionLabel.setText(fd.GetEdition());
-        mountLabel.setText(fd.GetMount());
+        primaryTabPane.setVisible(false);
+        spinner.setVisible(true);
+        gettingInfoLabel.setVisible(true);
+
         capacityLabel.setText(fd.GetDiskSize());
         filesystemLabel.setText(fd.GetFilesystem());
         deviceLabel.setText(fd.GetDevice());
-
         choosedevCheck.setDisable(mainApp.drives.size() < 2);
         usersComboBox.setItems(FXCollections.observableList(fd.GetUsers()));
         usersComboBox.getSelectionModel().select(0);
+
         this.newsIdx = 1;
 
         this.quick_apps.clear();
         this.videos.clear();
-        this.videos.addAll(this.fd.GetVideos());
-        this.quick_apps.addAll(this.fd.GetQApps());
-        videoHighlights.setItems(this.videos);
-        quickApps.setItems(this.quick_apps);
 
         playButton.setDisable(true);
         LoadNews(newsIdx);
         versionLabel.setText(String.format("Versioon %s", mainApp.version));
+        try {
+            vfStatusLabel.setText("Verifile olek: " + new Verifile(this.home + "/.mas").MakeAttestation());
+        } catch (NoSuchAlgorithmException e) {
+            vfStatusLabel.setText("Verifile olek: NO_SUCH_ALGORITHM");
+        }
 
-        long batch_size = fd.CalcDirSize("/Pakkfailid") + fd.CalcDirSize("/Batch");
-        long mas_size = fd.CalcDirSize("/markuse asjad/markuse asjad");
-        long os_size = fd.CalcDirSize("/multiboot");
-        long QApps_size = fd.CalcDirSize("/markuse asjad/Kiirrakendused");
-        long ps2_size = fd.CalcDirSize("/POPS") + fd.CalcDirSize("/DVD") + fd.CalcDirSize("/CD");
-        long misc_size = fd.GetOccupiedSpace() - batch_size - mas_size - os_size - QApps_size - ps2_size;
-        long free_space = fd.GetFreeSpace();
+        GetSizeTask sizeTask = new GetSizeTask(this.fd);
+        PopulateArraysTask populTask = new PopulateArraysTask(this.fd);
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("markuse asjad (" + fd.GetNiceSize(mas_size) + ")", mas_size),
-                new PieChart.Data("Pakkfailid (" + fd.GetNiceSize(batch_size) + ")", batch_size),
-                new PieChart.Data("Operatsioonsüsteemid (" + fd.GetNiceSize(os_size) + ")", os_size),
-                new PieChart.Data("Kiirrakendused (" + fd.GetNiceSize(QApps_size) + ")", QApps_size),
-                new PieChart.Data("PS2 mängud (" + fd.GetNiceSize(ps2_size) + ")", ps2_size),
-                new PieChart.Data("Muud asjad (" + fd.GetNiceSize(misc_size) + ")", misc_size),
-                new PieChart.Data("Vaba ruum (" + fd.GetNiceSize(free_space) + ")", free_space));
-        statChart.setTitle("Ruumi kasutuse statistika");
-        statChart.setData(pieChartData);
-        pieChartData.getLast().getNode().setStyle("-fx-pie-color: #fff0;");
+        sizeTask.setOnRunning(event -> {
+            statChart.setVisible(false);
+        });
+
+        populTask.setOnSucceeded(event -> {
+            this.videos.addAll(populTask.getValue().get("Videos"));
+            this.quick_apps.addAll(populTask.getValue().get("QApps"));
+            videoHighlights.setItems(this.videos);
+            quickApps.setItems(this.quick_apps);
+        });
+
+        sizeTask.setOnSucceeded(event -> {
+            spinner.setVisible(false);
+            gettingInfoLabel.setVisible(false);
+            primaryTabPane.setVisible(true);
+            statChart.setVisible(true);
+                HashMap<String, Long> result = sizeTask.getValue();
+                long misc_size;
+                long free_space;
+                try {
+                    misc_size = fd.GetOccupiedSpace() - result.get("Pakkfailid") - result.get("Markuse asjad") - result.get("Operatsioonsüsteemid") - result.get("Kiirrakendused") - result.get("PS2 mängud");
+                    free_space = fd.GetFreeSpace();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                        new PieChart.Data("markuse asjad (" + fd.GetNiceSize(result.get("Markuse asjad")) + ")", result.get("Markuse asjad")),
+                        new PieChart.Data("Pakkfailid (" + fd.GetNiceSize(result.get("Pakkfailid")) + ")",result.get("Pakkfailid") ),
+                        new PieChart.Data("Operatsioonsüsteemid (" + fd.GetNiceSize(result.get("Operatsioonsüsteemid")) + ")", result.get("Operatsioonsüsteemid")),
+                        new PieChart.Data("Kiirrakendused (" + fd.GetNiceSize(result.get("Kiirrakendused")) + ")", result.get("Kiirrakendused")),
+                        new PieChart.Data("PS2 mängud (" + fd.GetNiceSize(result.get("PS2 mängud")) + ")", result.get("PS2 mängud")),
+                        new PieChart.Data("Muud asjad (" + fd.GetNiceSize(misc_size) + ")", misc_size),
+                        new PieChart.Data("Vaba ruum (" + fd.GetNiceSize(free_space) + ")", free_space));
+                statChart.setTitle("Ruumi kasutuse statistika");
+                statChart.setData(pieChartData);
+                pieChartData.getLast().getNode().setStyle("-fx-pie-color: #fff0;");
+                editionLabel.setText(fd.GetEdition());
+                mountLabel.setText(fd.GetMount());
+        });
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.execute(sizeTask);
+        executorService.execute(populTask);
+        executorService.shutdown();
     }
 
     private void LoadNews(int idx) throws IOException {
@@ -391,4 +441,52 @@ public class InnerLayout {
             r.exec(cmd);
         }
     }
+
+    @FXML
+    private void ReAttestateVfile() {
+        try {
+            vfStatusLabel.setText("Verifile olek: " + new Verifile(this.home + "/.mas").MakeAttestation());
+        } catch (NoSuchAlgorithmException e) {
+            vfStatusLabel.setText("Verifile olek: NO_SUCH_ALGORITHM");
+        } catch (IOException e) {
+            vfStatusLabel.setText("Verifile olek: IO_EXCEPTION");
+        }
+    }
+
+    public class GetSizeTask extends Task<HashMap<String, Long>> {
+        final FlashDrive fd;
+
+        public GetSizeTask(FlashDrive fd) {
+            this.fd = fd;
+        }
+
+        @Override
+        protected HashMap<String, Long> call() throws Exception {
+            HashMap<String, Long> sizes = new LinkedHashMap<String, Long>();
+            sizes.put("Pakkfailid", fd.CalcDirSize("/Pakkfailid") + fd.CalcDirSize("/Batch"));
+            sizes.put("Markuse asjad", fd.CalcDirSize("/markuse asjad/markuse asjad"));
+            sizes.put("Operatsioonsüsteemid", fd.CalcDirSize("/multiboot"));
+            sizes.put("Kiirrakendused", fd.CalcDirSize("/markuse asjad/Kiirrakendused"));
+            sizes.put("PS2 mängud", fd.CalcDirSize("/POPS") + fd.CalcDirSize("/DVD") + fd.CalcDirSize("/CD"));
+            return sizes;
+        }
+    }
+
+    public class PopulateArraysTask extends Task<HashMap<String, List<String>>> {
+
+        final FlashDrive fd;
+
+        public PopulateArraysTask(FlashDrive fd) {
+            this.fd = fd;
+        }
+
+        @Override
+        protected HashMap<String, List<String>> call() throws Exception {
+            HashMap<String, List<String>> returns = new LinkedHashMap<String, List<String>>();
+            returns.put("Videos", this.fd.GetVideos());
+            returns.put("QApps", this.fd.GetQApps());
+            return returns;
+        }
+    }
+
 }
