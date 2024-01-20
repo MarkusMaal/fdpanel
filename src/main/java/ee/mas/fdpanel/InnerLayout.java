@@ -10,6 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -69,7 +72,30 @@ public class InnerLayout {
     @FXML
     private Button playButton;
 
+    @FXML
+    private ListView<String> quickApps;
+
+    @FXML
+    private ImageView qAppThumbnail;
+
+    @FXML
+    private Label qAppName;
+
+    @FXML
+    private Label qAppDescription;
+
+    @FXML
+    private Button qAppOpen;
+
+    @FXML
+    private Button qAppManage;
+
+    @FXML
+    private AnchorPane thumbnailParentNode;
+
     public final ObservableList<String> videos = FXCollections.observableArrayList();
+
+    public final ObservableList<String> quick_apps = FXCollections.observableArrayList();
 
     private int newsIdx = 1;
 
@@ -91,17 +117,25 @@ public class InnerLayout {
     }
 
     public void GatherInfo() throws IOException {
+
         editionLabel.setText(fd.GetEdition());
         mountLabel.setText(fd.GetMount());
         capacityLabel.setText(fd.GetDiskSize());
         filesystemLabel.setText(fd.GetFilesystem());
         deviceLabel.setText(fd.GetDevice());
+
         choosedevCheck.setDisable(mainApp.drives.size() < 2);
         usersComboBox.setItems(FXCollections.observableList(fd.GetUsers()));
         usersComboBox.getSelectionModel().select(0);
         this.newsIdx = 1;
+
+        this.quick_apps.clear();
+        this.videos.clear();
         this.videos.addAll(this.fd.GetVideos());
+        this.quick_apps.addAll(this.fd.GetQApps());
         videoHighlights.setItems(this.videos);
+        quickApps.setItems(this.quick_apps);
+
         playButton.setDisable(true);
         LoadNews(newsIdx);
     }
@@ -293,5 +327,17 @@ public class InnerLayout {
     private void playVideo() {
         String fileName = videoHighlights.getSelectionModel().getSelectedItem();
         openFile("/Markuse_videod/" + fileName);
+    }
+
+    @FXML
+    private void onChangeQAppSelection() {
+        if (!quickApps.getSelectionModel().getSelectedIndices().isEmpty()) {
+            qAppName.setText(quickApps.getSelectionModel().getSelectedItem());
+            String uri = "file://" + (fd.GetMount() + "/markuse asjad/Kiirrakendused/" + qAppName.getText() + "/" + qAppName.getText() + "ScreenShot.bmp").replaceAll(" ", "%20");
+            Image image = new Image(uri);
+            qAppThumbnail.setImage(image);
+            qAppThumbnail.fitWidthProperty().bind(thumbnailParentNode.widthProperty());
+            qAppDescription.setText(fd.GetQAppDescription(qAppName.getText()));
+        }
     }
 }

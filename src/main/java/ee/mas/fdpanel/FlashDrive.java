@@ -2,6 +2,7 @@ package ee.mas.fdpanel;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.security.MessageDigest;
@@ -9,8 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.awt.*;
 
 public class FlashDrive {
     private String mount;
@@ -52,14 +51,15 @@ public class FlashDrive {
         }
     }
 
-    private String readLine(String fileName) {
+    private String readLine(String fileName, Charset... charset) {
+        Charset cs = charset.length > 0 ? charset[0] : StandardCharsets.UTF_8;
         FileInputStream fstream = null;
         try {
             fstream = new FileInputStream(fileName);
         } catch (FileNotFoundException e) {
             return "";
         }
-        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+        BufferedReader br = new BufferedReader(new InputStreamReader(fstream, cs));
 
         try {
             String strLine = br.readLine();
@@ -179,6 +179,31 @@ public class FlashDrive {
             return fldrs;
         }
         return fldrs;
+    }
+
+    public List<String> GetQApps() {
+        DirectoryStream.Filter<Path> filter = new DirectoryStream.Filter<Path>() {
+            @Override
+            public boolean accept(Path file) throws IOException {
+                return Files.isDirectory(file) && !file.getFileName().toString().contains(" Mine");
+            }
+        };
+
+        List<String> fldrs = new ArrayList<>();
+        Path dir = FileSystems.getDefault().getPath(this.mount + "/markuse asjad/Kiirrakendused/");
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, filter)) {
+            for (Path path : stream) {
+                // Iterate over the paths in the directory and print filenames
+                fldrs.add(String.valueOf(path.getFileName()));
+            }
+        } catch (IOException e) {
+            return fldrs;
+        }
+        return fldrs;
+    }
+
+    public String GetQAppDescription(String appName) {
+        return readLine(this.mount + "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Info.txt", StandardCharsets.UTF_16);
     }
 
 
