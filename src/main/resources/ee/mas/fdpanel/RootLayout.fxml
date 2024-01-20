@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="587.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.RootLayout">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="240.0" minWidth="320.0" prefHeight="587.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.RootLayout">
    <top>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="118.0" prefWidth="780.0" BorderPane.alignment="TOP_RIGHT">
+      <VBox fx:id="headerContainer" alignment="CENTER" fillWidth="false" prefHeight="118.0" prefWidth="780.0" BorderPane.alignment="TOP_RIGHT">
          <children>
             <ImageView fitHeight="37.0" fitWidth="176.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -34,4 +34,11 @@
          </children>
       </VBox>
    </top>
+   <center>
+      <Label text="Palun oota..." BorderPane.alignment="CENTER">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+   </center>
 </BorderPane>

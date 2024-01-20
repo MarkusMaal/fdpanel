@@ -30,6 +30,8 @@ public class MainApp extends Application {
 
     public String version = "0.0";
 
+    public boolean isMas = false;
+
     public List<FlashDrive> drives = new ArrayList<>();
 
     @Override
@@ -96,7 +98,7 @@ public class MainApp extends Application {
                 s.append(ch);
             }
             for (String drv: s.toString().split("\n")) {
-                FlashDrive test = new FlashDrive("/run/media/markus/" + drv);
+                FlashDrive test = new FlashDrive("/run/media/markus/" + drv, this.isMas);
                 if (test.GetValid()) {
                     this.drives.add(test);
                 }
@@ -174,5 +176,9 @@ public class MainApp extends Application {
             System.out.println(e.getMessage());
             return 0;
         }
+    }
+
+    public void setMas(boolean val) {
+        this.isMas = val;
     }
 }

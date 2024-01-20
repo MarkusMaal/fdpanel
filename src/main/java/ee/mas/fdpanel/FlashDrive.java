@@ -1,5 +1,7 @@
 package ee.mas.fdpanel;
 
+import javafx.scene.paint.Color;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -20,8 +22,14 @@ public class FlashDrive {
     private Boolean securePin;
 
     private String pin;
-    public FlashDrive(String mount) {
+
+    private Color bg;
+    private Color fg;
+
+    private boolean isMas;
+    public FlashDrive(String mount, boolean isMas) {
         this.mount = mount;
+        this.isMas = isMas;
         this.initialize();
     }
 
@@ -31,6 +39,18 @@ public class FlashDrive {
         File spin = new File(mount + "/NTFS/spin.sys");
         this.isValid = e_info.exists() && !e_info.isDirectory() && ((upin.exists() && !upin.isDirectory()) || (spin.exists() && !spin.isDirectory()));
         this.edition = readLine(e_info.getAbsolutePath());
+        if (!this.isMas) {
+            this.bg = Color.rgb(255, 255, 255);
+            this.fg = Color.rgb(0, 0, 0);
+        } else {
+            // load color scheme from home folder
+            String home = System.getProperty("user.home");
+            String theme_setting = this.readLine(home + "/.mas/scheme.cfg");
+            String[] bg_str = theme_setting.split(";")[0].split(":");
+            String[] fg_str = theme_setting.split(";")[1].split(":");
+            this.bg = Color.rgb(Integer.parseInt(bg_str[0]), Integer.parseInt(bg_str[1]), Integer.parseInt(bg_str[2]));
+            this.fg = Color.rgb(Integer.parseInt(fg_str[0]), Integer.parseInt(fg_str[1]), Integer.parseInt(fg_str[2]));
+        }
         this.ReloadPin();
     }
 
@@ -204,6 +224,11 @@ public class FlashDrive {
 
     public String GetQAppDescription(String appName) {
         return readLine(this.mount + "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Info.txt", StandardCharsets.UTF_16);
+    }
+
+    public boolean DoesQAppRequireWine(String appName) {
+        File f = new File(this.mount + "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Portable.AppImage");
+        return !f.exists() || f.isDirectory();
     }
 
 

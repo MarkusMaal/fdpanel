@@ -290,10 +290,13 @@ public class InnerLayout {
         }
     }
 
-    private void openFile(String filename) {
+    private void openFile(String filename, String... pref) {
         try {
+            String prefix = pref.length > 0 ? pref[0] : "xdg-open";
             Runtime r = Runtime.getRuntime();
-            r.exec("xdg-open file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20"));
+            String cmd = prefix + " file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20");
+            System.out.println(cmd);
+            r.exec(cmd);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -338,6 +341,27 @@ public class InnerLayout {
             qAppThumbnail.setImage(image);
             qAppThumbnail.fitWidthProperty().bind(thumbnailParentNode.widthProperty());
             qAppDescription.setText(fd.GetQAppDescription(qAppName.getText()));
+            Boolean requiresWine = fd.DoesQAppRequireWine(qAppName.getText());
+            if (requiresWine) {
+                qAppName.setText(qAppName.getText() + " (Wine)");
+            }
+        }
+        qAppOpen.setDisable(quickApps.getSelectionModel().getSelectedIndices().isEmpty());
+    }
+
+    @FXML
+    private void onQAppOpenClicked() throws IOException {
+        String appName = qAppName.getText().replace(" (Wine)", "");
+        String uri = "";
+        boolean wine = !appName.equals(qAppName.getText());
+        if (wine) {
+            uri = "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Portable.exe";
+            openFile(uri, "wine");
+        } else {
+            uri = "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Portable.AppImage";
+            Runtime r = Runtime.getRuntime();
+            String cmd = "sh -c " + " /" + fd.GetMount() + uri;
+            r.exec(cmd);
         }
     }
 }
