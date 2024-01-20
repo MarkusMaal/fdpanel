@@ -7,9 +7,9 @@ Siin on list funktsionaalsusest, mida ma planeerin lisada. Enamik neist on lihts
 - Uudised vahekaart
     - Võimaldab lugeda erinevaid "uudised" Markuse asjade kohta, mis on talletatud mälupulgal
     - Kuvab esiletõstetud videod ja võimaldab neid esitada
-- Kiirrakendused vahekaart (TBD)
-    - Võimaldab hallata mälupulgal olevaid kaasaskantavaid programme (lisamine/eemaldamine)
-    - Tugi .AppImage tõmmiste jaoks (loodetavasti kunagi)
+- Kiirrakendused vahekaart
+    - (TBD) Võimaldab hallata mälupulgal olevaid kaasaskantavaid programme (lisamine/eemaldamine)
+    - (TBD) Tugi .AppImage tõmmiste jaoks (loodetavasti kunagi)
     - Kiirrakendused kuvatud listina või võimalusel ikoonidena
     - Kiirrakendustele saab lisada kuvatõmmise ja kirjelduse
 - Kaustad vahekaart
@@ -21,7 +21,7 @@ Siin on list funktsionaalsusest, mida ma planeerin lisada. Enamik neist on lihts
     - Erinevad seadistused mälupulga juhtpaneeli jaoks
     - (TBD) Haldamisfunktsioonid, sh mälupulga nime muutmine, PIN-koodi muutmine, varundamishaldur, lisafunktsioonid (nt teema muutmine, turvarežiim)
     - Andmete värskendamine, mitme mälupulga tugi
-- Statistika vahekaart (TBD)
+- Statistika vahekaart
     - Ringdiagramm erinevatest mälupulga kaustadest, mis kasutavad ruumi
 - Arendamine vahekaart (TBD)
     - Uudiste lisamine/eemaldamine/muutmine

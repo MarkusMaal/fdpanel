@@ -2,14 +2,18 @@ package ee.mas.fdpanel;
 
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.InputStream;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class MainApp extends Application {
     public Stage primaryStage;
@@ -28,17 +33,16 @@ public class MainApp extends Application {
 
     public FlashDrive fd;
 
-    public String version = "0.0";
+    public String version = "0.1";
 
     public boolean isMas = false;
 
     public List<FlashDrive> drives = new ArrayList<>();
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, InterruptedException {
         this.primaryStage = stage;
         this.primaryStage.setTitle("Markuse mälupulk");
-        initRootLayout();
         findFlashDrives();
         if (!this.drives.isEmpty()) {
             int idx = 0;
@@ -54,10 +58,11 @@ public class MainApp extends Application {
             alert.showAndWait();
             ReloadDevices(true);
         }
+        initRootLayout();
         showFirstForm();
     }
 
-    public void ReloadDevices(boolean chooseDev) throws IOException {
+    public void ReloadDevices(boolean chooseDev) throws IOException, InterruptedException {
         this.drives.clear();
         int idx = 0;
         findFlashDrives();
@@ -151,7 +156,7 @@ public class MainApp extends Application {
         this.primaryStage.setFullScreen(b);
     }
 
-    public int showDriveChooserDialog() {
+    public int showDriveChooserDialog() throws InterruptedException {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("DriveChooser.fxml"));
@@ -159,6 +164,7 @@ public class MainApp extends Application {
 
             // Create the dialog stage
             Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
             dialogStage.setTitle("Leidsime " + this.drives.size() + " mälupulka");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
@@ -166,9 +172,9 @@ public class MainApp extends Application {
             dialogStage.setScene(scene);
 
             DriveChooser controller = loader.getController();
+
             controller.setDialogStage(dialogStage);
             controller.setDrives(this.drives);
-
             dialogStage.showAndWait();
 
             return controller.getSelectedDrive();
@@ -176,6 +182,12 @@ public class MainApp extends Application {
             System.out.println(e.getMessage());
             return 0;
         }
+    }
+
+    private void centerStage(Stage stage, double width, double height) {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((screenBounds.getWidth() - width) / 2);
+        stage.setY((screenBounds.getHeight() - height) / 2);
     }
 
     public void setMas(boolean val) {

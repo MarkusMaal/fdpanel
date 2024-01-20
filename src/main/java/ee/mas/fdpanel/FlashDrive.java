@@ -10,6 +10,7 @@ import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,16 @@ public class FlashDrive {
         DecimalFormat df = new DecimalFormat("###.##");
         newStr = df.format(capacityGiga) + " GB (" + df.format(capacityGibi) + " GiB)";
         return newStr;
+    }
+
+    public Long GetOccupiedSpace() throws IOException {
+        FileStore store = Files.getFileStore(Path.of(this.mount));
+        return store.getTotalSpace() - store.getUsableSpace();
+    }
+
+    public Long GetFreeSpace() throws IOException {
+        FileStore store = Files.getFileStore(Path.of(this.mount));
+        return store.getUsableSpace();
     }
 
     public String GetEdition() {
@@ -231,5 +242,44 @@ public class FlashDrive {
         return !f.exists() || f.isDirectory();
     }
 
+    public long CalcDirSize(String dirName) {
+        String dir = this.mount + dirName;
+        System.out.print("Calculating size for " + dir);
+        return this.CalculateFileSize(new File(dir));
+    }
 
+    public long CalculateFileSize(File file) {
+        long fileSize = 0L;
+        boolean isSymbolicLink = Files.isSymbolicLink(file.toPath());
+        if(file.isDirectory() && !isSymbolicLink) {
+            System.out.print("\rCalculating size for " + file.getName());
+            File[] children = file.listFiles();
+            for(File child : children != null ? children : new File[0]) {
+                fileSize += CalculateFileSize(child);
+            }
+        }
+        else {
+            fileSize = file.length();
+        }
+        return fileSize;
+    }
+
+    public String GetNiceSize(Long size) {
+        DecimalFormat df = new DecimalFormat("###.##");
+        if (size < 1000L) {
+            return size + " B";
+        } else if (size < 1000000L) {
+            return df.format((float)size / 1000f) + " kB";
+        } else if (size < 1000000000L) {
+            return df.format((float)size / 1000000f) + " MB";
+        } else if (size < 1000000000000L) {
+            return df.format((float)size / 1000000000f) + " GB";
+        } else if (size < 1000000000000000L) {
+            return df.format((float)size / 1000000000000f) + " TB";
+        } else if (size < 1000000000000000000L) {
+            return df.format((float)size / 1000000000000000f) + " PB";
+        } else {
+            return df.format((float)size / 1000000000000000000f) + " EB";
+        }
+    }
 }

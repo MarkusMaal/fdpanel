@@ -7,6 +7,7 @@ import com.rtfparserkit.parser.RtfStringSource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -93,6 +94,12 @@ public class InnerLayout {
     @FXML
     private AnchorPane thumbnailParentNode;
 
+    @FXML
+    private Label versionLabel;
+
+    @FXML
+    private PieChart statChart;
+
     public final ObservableList<String> videos = FXCollections.observableArrayList();
 
     public final ObservableList<String> quick_apps = FXCollections.observableArrayList();
@@ -109,7 +116,6 @@ public class InnerLayout {
     private void initialize() throws IOException {
         FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-
         String strLine = br.readLine();
         //Close the input stream
         fstream.close();
@@ -138,6 +144,27 @@ public class InnerLayout {
 
         playButton.setDisable(true);
         LoadNews(newsIdx);
+        versionLabel.setText(String.format("Versioon %s", mainApp.version));
+
+        long batch_size = fd.CalcDirSize("/Pakkfailid");
+        long mas_size = fd.CalcDirSize("/markuse asjad/markuse asjad");
+        long os_size = fd.CalcDirSize("/multiboot");
+        long QApps_size = fd.CalcDirSize("/markuse asjad/Kiirrakendused");
+        long ps2_size = fd.CalcDirSize("/POPS") + fd.CalcDirSize("/DVD") + fd.CalcDirSize("/CD");
+        long misc_size = fd.GetOccupiedSpace() - batch_size - mas_size - os_size - QApps_size - ps2_size;
+        long free_space = fd.GetFreeSpace();
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("markuse asjad (" + fd.GetNiceSize(mas_size) + ")", mas_size),
+                new PieChart.Data("Pakkfailid (" + fd.GetNiceSize(batch_size) + ")", batch_size),
+                new PieChart.Data("Operatsioonsüsteemid (" + fd.GetNiceSize(os_size) + ")", os_size),
+                new PieChart.Data("Kiirrakendused (" + fd.GetNiceSize(QApps_size) + ")", QApps_size),
+                new PieChart.Data("PS2 mängud (" + fd.GetNiceSize(ps2_size) + ")", ps2_size),
+                new PieChart.Data("Muud asjad (" + fd.GetNiceSize(misc_size) + ")", misc_size),
+                new PieChart.Data("Vaba ruum (" + fd.GetNiceSize(free_space) + ")", free_space));
+        statChart.setTitle("Ruumi kasutuse statistika");
+        statChart.setData(pieChartData);
+        pieChartData.getLast().getNode().setStyle("-fx-pie-color: #fff0;");
     }
 
     private void LoadNews(int idx) throws IOException {
@@ -199,7 +226,7 @@ public class InnerLayout {
     }
 
     @FXML
-    private void reloadDevices() {
+    private void reloadDevices() throws InterruptedException {
         try {
             mainApp.ReloadDevices(choosedevCheck.isSelected());
             this.fd = mainApp.fd;

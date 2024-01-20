@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class DriveChooser {
         }
         drivePicker.setItems(FXCollections.observableList(driveStrings));
         drivePicker.getSelectionModel().select(0);
+        dialogStage.centerOnScreen();
     }
     @FXML
     private void initialize() {
