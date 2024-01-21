@@ -12,8 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
@@ -79,6 +81,18 @@ public class InnerLayout {
     private TabPane primaryTabPane;
     @FXML
     private Button unsecurePinButton;
+    @FXML
+    private ListView<String> videoHightlightsDev;
+    @FXML
+    private Button addVideoButton;
+    @FXML
+    private FlowPane newsFlowDev;
+    @FXML
+    private Button integrityCheckButton;
+    @FXML
+    private Button unlockDevButton;
+
+    private Image initialImage;
 
     public final ObservableList<String> videos = FXCollections.observableArrayList();
 
@@ -97,6 +111,7 @@ public class InnerLayout {
 
         FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+        initialImage = qAppThumbnail.getImage();
         String strLine = br.readLine();
         //Close the input stream
         fstream.close();
@@ -104,6 +119,12 @@ public class InnerLayout {
     }
 
     public void GatherInfo() throws IOException { if (mainApp.platform.isEmpty()) { return; }
+        videoHightlightsDev.setDisable(true);
+        addVideoButton.setDisable(true);
+        newsFlowDev.setDisable(true);
+        integrityCheckButton.setDisable(true);
+        unlockDevButton.setText("Lukusta lahti");
+
         primaryTabPane.setVisible(false);
         spinner.setVisible(true);
         gettingInfoLabel.setVisible(true);
@@ -114,6 +135,9 @@ public class InnerLayout {
         choosedevCheck.setDisable(mainApp.drives.size() < 2);
         usersComboBox.setItems(FXCollections.observableList(fd.GetUsers()));
         usersComboBox.getSelectionModel().select(0);
+        qAppThumbnail.setImage(this.initialImage);
+        qAppName.setText("Kiirrakendused");
+        qAppDescription.setText("Kiirrakendused on nagu tavaliselt rakendused, kuid neil on üks suur erinevus - neid saab käivitada otse mälupulgalt ilma midagi arvutisse installimata! Klõpsake ühel kiirakendusel, et näha lisainfot.");
 
         if (this.fd.IsSecurePin()) {
             unsecurePinButton.setText("Ebaturvaline PIN kood");
@@ -145,6 +169,7 @@ public class InnerLayout {
         populTask.setOnSucceeded(event -> {
             this.videos.addAll(populTask.getValue().get("Videos"));
             this.quick_apps.addAll(populTask.getValue().get("QApps"));
+            videoHightlightsDev.setItems(this.videos);
             videoHighlights.setItems(this.videos);
             quickApps.setItems(this.quick_apps);
         });
@@ -346,7 +371,6 @@ public class InnerLayout {
             String prefix = pref.length > 0 ? pref[0] : "xdg-open";
             Runtime r = Runtime.getRuntime();
             String cmd = prefix + " file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20");
-            System.out.println(cmd);
             r.exec(cmd);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -431,14 +455,23 @@ public class InnerLayout {
 
     @FXML
     private void PinTest() {
+        if (unlockDevButton.getText().equals("Lukusta")) {
+            unlockDevButton.setText("Lukusta lahti");
+            videoHightlightsDev.setDisable(true);
+            addVideoButton.setDisable(true);
+            newsFlowDev.setDisable(true);
+            integrityCheckButton.setDisable(true);
+            return;
+        }
         String enteredPin = mainApp.showPinDialog("Sisestage PIN kood kontrollimiseks");
 
         try {
             if (this.fd.VerifyPin(enteredPin)) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("PIN koodi kontroll");
-                alert.setHeaderText("Kood õige!");
-                alert.showAndWait();
+                unlockDevButton.setText("Lukusta");
+                videoHightlightsDev.setDisable(false);
+                addVideoButton.setDisable(false);
+                newsFlowDev.setDisable(false);
+                integrityCheckButton.setDisable(false);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Mälupulga juhtpaneel");
@@ -447,6 +480,39 @@ public class InnerLayout {
             }
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Runtime error: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void ReplaceVideo() {
+        if (videoHightlightsDev.getSelectionModel().getSelectedIndices().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Palun valige üks video");
+            alert.showAndWait();
+            return;
+        }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Vali fail mälupulgalt");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Videofailid", "*.mp4", "*.mpg", "*.wmv", "*.mov", "*.avi", "*.mkv", "*.ogv"),
+                new FileChooser.ExtensionFilter("Kõik failid", "*.*")
+        );
+        try {
+            File videoFile = fileChooser.showOpenDialog(this.mainApp.primaryStage);
+            this.fd.ReplaceVideo(videoHightlightsDev.getSelectionModel().getSelectedItem(), videoFile.getAbsolutePath(), usersComboBox.getSelectionModel().getSelectedItem().toString());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Video asendatud");
+            alert.setContentText("Video asendati edukalt! Muudatuste rakendamiseks värskendame andmeid.");
+            alert.showAndWait();
+            reloadDevices();
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Muudatusi ei tehtud");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
@@ -549,6 +615,17 @@ public class InnerLayout {
         String flashName = mainApp.showInputBox("Sisesta uus mälupulga nimi");
         this.fd.SetName(flashName);
     }
+
+    @FXML
+    private void DevNews1() { openFile("/E_INFO/uudis1.rtf"); }
+    @FXML
+    private void DevNews2() { openFile("/E_INFO/uudis2.rtf"); }
+    @FXML
+    private void DevNews3() { openFile("/E_INFO/uudis3.rtf"); }
+    @FXML
+    private void DevNews4() { openFile("/E_INFO/uudis4.rtf"); }
+    @FXML
+    private void DevNews5() { openFile("/E_INFO/uudis5.rtf"); }
 
     public class GetSizeTask extends Task<HashMap<String, Long>> {
         final FlashDrive fd;

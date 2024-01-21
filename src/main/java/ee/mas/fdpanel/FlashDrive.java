@@ -337,4 +337,15 @@ public class FlashDrive {
             return df.format((float)size / 1000000000000000000f) + " EB";
         }
     }
+
+    public void ReplaceVideo(String original, String replacedBy, String userName) throws IOException {
+        File originalVideo = new File(this.mount + "/Markuse_videod/" + original);
+        File newVideo = new File(replacedBy);
+        String[] originalSplit = original.split("\\. ");
+        String index = originalSplit[0];
+        String safeName = originalSplit[1];
+        Files.move(originalVideo.toPath(), Path.of(this.mount + "/markuse asjad/markuse asjad/" + userName + "/Minu videod/" + safeName));
+        Files.move(newVideo.toPath(), Path.of(this.mount + "/Markuse_videod/" + index + ". " + newVideo.getName()));
+        System.out.println(newVideo.getName());
+    }
 }
