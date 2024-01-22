@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact name="fdpanel:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/fdpanel_jar</output-path>
+    <root id="root">
+      <element id="archive" name="fdpanel.jar">
+        <element id="module-output" name="fdpanel" />
+      </element>
+      <element id="library" level="project" name="Maven: net.java.dev.jna:jna:5.14.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:linux:21" />
+      <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:4.0.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:linux:21" />
+      <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:2.1.2" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:21" />
+      <element id="library" level="project" name="Maven: org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:linux:21" />
+      <element id="library" level="project" name="Maven: org.controlsfx:controlsfx:11.1.2" />
+      <element id="library" level="project" name="Maven: com.dlsc.formsfx:formsfx-core:11.6.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:21" />
+      <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:2.0.11" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:linux:21" />
+      <element id="library" level="project" name="Maven: com.github.oshi:oshi-core:6.4.11" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:21" />
+      <element id="library" level="project" name="Maven: com.github.joniles:rtfparserkit:1.16.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:21" />
+      <element id="library" level="project" name="Maven: net.java.dev.jna:jna-platform:5.14.0" />
+    </root>
+  </artifact>
+</component>

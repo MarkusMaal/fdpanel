@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Main-Class: ee.mas.fdpanel.Launcher
+Class-Path: jna-5.14.0.jar javafx-fxml-21-linux.jar jakarta.xml.bind-api
+ -4.0.1.jar javafx-controls-21-linux.jar jakarta.activation-api-2.1.2.ja
+ r javafx-fxml-21.jar bootstrapfx-core-0.4.0.jar javafx-graphics-21-linu
+ x.jar controlsfx-11.1.2.jar formsfx-core-11.6.0.jar javafx-base-21.jar 
+ slf4j-api-2.0.11.jar javafx-base-21-linux.jar oshi-core-6.4.11.jar java
+ fx-controls-21.jar rtfparserkit-1.16.0.jar javafx-graphics-21.jar jna-p
+ latform-5.14.0.jar
+

@@ -91,10 +91,14 @@ public class MainApp extends Application {
         if (chooseDev && (this.drives.size() > 1)) {
             idx = showDriveChooserDialog();
         } else {
-            for (int i = 0; i < this.drives.size(); i++) {
-                if (this.drives.get(i).GetDiskSize().equals(this.fd.GetDiskSize()) && this.drives.get(i).GetDevice().equals(this.fd.GetDevice())) {
-                    idx = i;
+            if (this.fd != null) {
+                for (int i = 0; i < this.drives.size(); i++) {
+                    if (this.drives.get(i).GetDiskSize().equals(this.fd.GetDiskSize()) && this.drives.get(i).GetDevice().equals(this.fd.GetDevice())) {
+                        idx = i;
+                    }
                 }
+            } else {
+                idx = 0;
             }
         }
         if (!this.drives.isEmpty()) {
