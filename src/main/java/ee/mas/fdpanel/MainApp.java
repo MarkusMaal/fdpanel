@@ -263,6 +263,30 @@ public class MainApp extends Application {
         }
     }
 
+    public void showExtrasDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+
+            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
+            loader.setLocation(MainApp.class.getResource("AdditionalFeatures.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog stage
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("Lisa");
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            AdditionalFeatures controller = loader.getController();
+            controller.setMainApp(this);
+            dialogStage.show();
+        } catch (IOException | NoSuchAlgorithmException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void centerStage(Stage stage, double width, double height) {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX((screenBounds.getWidth() - width) / 2);

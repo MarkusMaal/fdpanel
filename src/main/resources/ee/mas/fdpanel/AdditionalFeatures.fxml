@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="382.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.AdditionalFeatures">
+   <children>
+      <Label layoutX="22.0" layoutY="213.0" text="Lisafunktsioonid" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="10.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <FlowPane layoutX="14.0" layoutY="262.0" orientation="VERTICAL" prefHeight="134.0" prefWidth="224.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <children>
+            <Button disable="true" mnemonicParsing="false" onAction="#SafeModeClicked" onMouseEntered="#HoverSafeMode" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Turvarežiim" />
+            <Button mnemonicParsing="false" onAction="#WinVerClicked" onMouseEntered="#HoverLegacyPanel" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Windowsi versioon" />
+            <Button disable="true" mnemonicParsing="false" onAction="#CustomizeThemeClicked" onMouseEntered="#HoverCustomizeTheme" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Teema kohandamine" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </FlowPane>
+      <VBox fx:id="previewContainer" alignment="CENTER" layoutX="353.0" layoutY="130.0" prefHeight="200.0" prefWidth="186.0" AnchorPane.bottomAnchor="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <ImageView fx:id="previewImage" fitHeight="165.0" fitWidth="149.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Info.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <Label fx:id="functionTitle" layoutX="248.0" layoutY="253.0" prefHeight="20.0" prefWidth="362.0" text="Lisainfo funktsiooni kohta" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="functionDesc" alignment="TOP_LEFT" layoutX="241.0" layoutY="285.0" prefHeight="104.0" prefWidth="342.0" text="Lisanduv info teatud funktsiooni kohta ilmub siia, kui viite kursori kindla nupu peale." wrapText="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

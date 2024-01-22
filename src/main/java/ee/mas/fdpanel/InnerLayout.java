@@ -627,6 +627,11 @@ public class InnerLayout {
     @FXML
     private void DevNews5() { openFile("/E_INFO/uudis5.rtf"); }
 
+    @FXML
+    private void OpenExtras() {
+        mainApp.showExtrasDialog();
+    }
+
     public class GetSizeTask extends Task<HashMap<String, Long>> {
         final FlashDrive fd;
 
