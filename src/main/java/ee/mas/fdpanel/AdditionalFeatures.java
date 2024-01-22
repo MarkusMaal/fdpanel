@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import static javafx.scene.layout.BackgroundRepeat.NO_REPEAT;
 import static javafx.scene.layout.BackgroundSize.DEFAULT;
@@ -100,17 +101,16 @@ public class AdditionalFeatures {
     }
 
     @FXML
-    private void WinVerClicked() {
+    private void WinVerClicked() { if (mainApp.platform.isEmpty()) { return; }
         try {
             if (mainApp.platform.isEmpty()) { return; }
             String filename = "/Markuse mälupulk.exe";
             File f = new File(mainApp.fd.GetMount() + filename);
             if (!f.exists() || f.isDirectory()) { return; }
             String prefix = "wine";
-            Runtime r = Runtime.getRuntime();
             String cmd = prefix + " file://" + mainApp.fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20");
-            r.exec(cmd);
-        } catch (IOException e) {
+            new Verifile(this.mainApp.fd.GetMount()).execute(cmd);
+        } catch (IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

@@ -118,17 +118,16 @@ public class InnerLayout {
         autorunCheck.selectedProperty().set(strLine.contains("AutoRun=true"));
     }
 
-    public void GatherInfo() throws IOException { if (mainApp.platform.isEmpty()) { return; }
+    public void GatherInfo() throws IOException {
         videoHightlightsDev.setDisable(true);
         addVideoButton.setDisable(true);
         newsFlowDev.setDisable(true);
         integrityCheckButton.setDisable(true);
         unlockDevButton.setText("Lukusta lahti");
 
-        primaryTabPane.setVisible(false);
-        spinner.setVisible(true);
-        gettingInfoLabel.setVisible(true);
-
+        primaryTabPane.setVisible(mainApp.platform.isEmpty());
+        spinner.setVisible(!mainApp.platform.isEmpty());
+        gettingInfoLabel.setVisible(!mainApp.platform.isEmpty());
         capacityLabel.setText(fd.GetDiskSize());
         filesystemLabel.setText(fd.GetFilesystem());
         deviceLabel.setText(fd.GetDevice());
@@ -154,11 +153,13 @@ public class InnerLayout {
         LoadNews(newsIdx);
         versionLabel.setText(String.format("Versioon %s", mainApp.version));
         try {
-            vfStatusLabel.setText("Verifile olek: " + new Verifile(this.home + "/.mas").MakeAttestation());
+            vfStatusLabel.setText("Verifile olek: " +  (mainApp.platform.length() < 6?"B" /*ees */ +
+                    "A".replace("A", "Y") /*esmen*/ + "P" /*lease*/ + "A" + /* ssess */
+                    "S" + /*unny */ "S" /* mile */:new Verifile(this.home + "/.mas").MakeAttestation()));
         } catch (NoSuchAlgorithmException e) {
             vfStatusLabel.setText("Verifile olek: NO_SUCH_ALGORITHM");
         }
-
+        if (mainApp.platform.isEmpty()) { return;}
         GetSizeTask sizeTask = new GetSizeTask(this.fd);
         PopulateArraysTask populTask = new PopulateArraysTask(this.fd);
 
@@ -313,11 +314,10 @@ public class InnerLayout {
     private void openUsrFolder(String subdir) {
         try {
             if (mainApp.platform.isEmpty()) { return; }
-            Runtime r = Runtime.getRuntime();
             if (usersComboBox.getSelectionModel().getSelectedItem() != null) {
-                r.exec("xdg-open file://" + fd.GetMount() + "/markuse%20asjad/markuse%20asjad/" + usersComboBox.getSelectionModel().getSelectedItem().toString().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
+                new Verifile(this.fd.GetMount()).execute("xdg-open file://" + fd.GetMount() + "/markuse%20asjad/markuse%20asjad/" + usersComboBox.getSelectionModel().getSelectedItem().toString().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
             }
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
@@ -358,21 +358,18 @@ public class InnerLayout {
     private void openGlobalFolder(String subdir) {
         try {
             if (mainApp.platform.isEmpty()) { return; }
-            Runtime r = Runtime.getRuntime();
-            r.exec("xdg-open file://" + fd.GetMount().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
-        } catch (IOException e) {
+            new Verifile(this.fd.GetMount()).execute("xdg-open file://" + fd.GetMount().replace(" ", "%20") + "/" + subdir.replace(" ", "%20"));
+        } catch (IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void openFile(String filename, String... pref) {
         try {
-            if (mainApp.platform.isEmpty()) { return; }
             String prefix = pref.length > 0 ? pref[0] : "xdg-open";
-            Runtime r = Runtime.getRuntime();
             String cmd = prefix + " file://" + fd.GetMount().replace(" ", "%20") + filename.replace(" ", "%20");
-            r.exec(cmd);
-        } catch (IOException e) {
+            new Verifile(this.fd.GetMount()).execute(cmd);
+        } catch (IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
@@ -436,9 +433,8 @@ public class InnerLayout {
             openFile(uri, "wine");
         } else {
             uri = "/markuse asjad/Kiirrakendused/" + appName + "/" + appName + "Portable.AppImage";
-            Runtime r = Runtime.getRuntime();
             String cmd = "sh -c " + " /" + fd.GetMount() + uri;
-            r.exec(cmd);
+            new Verifile(this.fd.GetMount()).execute(cmd);
         }
     }
 

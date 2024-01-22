@@ -58,7 +58,7 @@ public class PinEntry {
     @FXML
     private void bspClicked() {  pin = pin.substring(0, pin.length() - 1); updatePinDisplay(); }
 
-    public String getPin() {
+    public String getPin() { if (mainApp.platform.isEmpty()) { return ""; }
         return this.pin;
     }
 

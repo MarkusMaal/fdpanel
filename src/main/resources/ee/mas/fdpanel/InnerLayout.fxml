@@ -354,7 +354,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="vfStatusLabel" layoutX="10.0" layoutY="360.0" text="Verifile olek: UNLOADED" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="360.0" />
-                        <Button fx:id="integrityCheckButton" disable="true" layoutX="10.0" layoutY="390.0" mnemonicParsing="false" onAction="#ReAttestateVfile" prefWidth="150.0" text="Kontrolli terviklikkust" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="390.0" />
+                        <Button fx:id="integrityCheckButton" disable="true" layoutX="10.0" layoutY="390.0" mnemonicParsing="false" onAction="#ReAttestateVfile" prefWidth="160.0" text="Kontrolli terviklikkust" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="390.0" />
                         <Button fx:id="unlockDevButton" layoutX="555.0" layoutY="23.0" mnemonicParsing="false" onAction="#PinTest" prefHeight="26.0" prefWidth="150.0" text="Lukusta lahti" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
                         <Label layoutX="14.0" layoutY="14.0" text="Esiletõstetud videod" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0">
                            <font>

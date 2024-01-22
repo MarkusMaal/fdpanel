@@ -1,14 +1,18 @@
 package ee.mas.fdpanel;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
 import java.io.File;
+import java.util.Random;
 
 public class RootLayout {
 
     private MainApp mainApp;
+
+    private final Random r = new Random();
 
     @FXML
     private VBox headerContainer;
@@ -28,5 +32,17 @@ public class RootLayout {
     }
     @FXML
     private void initialize() {
+    }
+
+    @FXML
+    private void roll() {
+        int rollVal = r.nextInt(999);
+        if (rollVal == 777) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Loosimine");
+            alert.setHeaderText("Teil on õnnepäev!");
+            alert.setContentText("Suutsite veeretada numbri 777. Šanss seda saada on 0,001%!");
+            alert.showAndWait();
+        }
     }
 }

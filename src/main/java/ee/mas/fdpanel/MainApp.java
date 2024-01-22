@@ -41,6 +41,7 @@ public class MainApp extends Application {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Mälupulga juhtpaneel");
         alert.setHeaderText("Platvormi viga");
+
         switch (this.platform = new Verifile(System.getProperty("user.home") + this.alphabet.charAt(29) + this.alphabet.charAt(26) + "sbm".replace("m", "x").replace("s", "m").replace("b", "a").replace("x", "s")).MakeAttestation()) {
             case "TAMPERED":
                 alert.setContentText("Markuse arvuti asjad pole sellesse seadmesse õigesti paigaldatud. Palun kasutage juurutamiseks sobivat tööriista. Mälupulga juhtpaneel ei tööta valesti juurutatud seadmetes.\n\nTehniline info: VFILE_TAMPERED");
@@ -222,7 +223,6 @@ public class MainApp extends Application {
     public String showPinDialog(String message) {
         try {
             FXMLLoader loader = new FXMLLoader();
-            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return ""; }
             loader.setLocation(MainApp.class.getResource("PinEntry.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -236,10 +236,11 @@ public class MainApp extends Application {
 
             PinEntry controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setMainApp(this);
             dialogStage.showAndWait();
 
             return controller.getPin();
-        } catch (NoSuchAlgorithmException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -247,8 +248,6 @@ public class MainApp extends Application {
     public int showDriveChooserDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
-
-            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return -1; }
             loader.setLocation(MainApp.class.getResource("DriveChooser.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -268,7 +267,7 @@ public class MainApp extends Application {
             dialogStage.showAndWait();
 
             return controller.getSelectedDrive();
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
             return 0;
         }
@@ -277,8 +276,6 @@ public class MainApp extends Application {
     public void showExtrasDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
-
-            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
             loader.setLocation(MainApp.class.getResource("AdditionalFeatures.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -293,7 +290,7 @@ public class MainApp extends Application {
             AdditionalFeatures controller = loader.getController();
             controller.setMainApp(this);
             dialogStage.show();
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -301,8 +298,6 @@ public class MainApp extends Application {
     public void initSafeMode() {
         try {
             FXMLLoader loader = new FXMLLoader();
-
-            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
             loader.setLocation(MainApp.class.getResource("SafeMode.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
@@ -319,7 +314,7 @@ public class MainApp extends Application {
             controller.setFd(this.fd);
             controller.GatherInfo();
             dialogStage.show();
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }

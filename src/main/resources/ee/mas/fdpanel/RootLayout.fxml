@@ -12,7 +12,7 @@
    <top>
       <VBox fx:id="headerContainer" alignment="CENTER" fillWidth="false" prefHeight="118.0" prefWidth="780.0" BorderPane.alignment="TOP_RIGHT">
          <children>
-            <ImageView fitHeight="37.0" fitWidth="176.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="176.0" onMouseClicked="#roll" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@mas_flash.png" />
                </image>

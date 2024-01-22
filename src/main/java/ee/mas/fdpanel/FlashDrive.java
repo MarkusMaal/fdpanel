@@ -306,7 +306,7 @@ public class FlashDrive {
 
     public long CalculateFileSize(File file) {
         long fileSize = 0L;
-        boolean isSymbolicLink = Files.isSymbolicLink(file.toPath());
+        boolean isSymbolicLink = new Verifile(this.mount).cs(file);
         if(file.isDirectory() && !isSymbolicLink) {
             File[] children = file.listFiles();
             for(File child : children != null ? children : new File[0]) {
