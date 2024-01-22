@@ -15,7 +15,7 @@
       </Label>
       <FlowPane layoutX="14.0" layoutY="262.0" orientation="VERTICAL" prefHeight="134.0" prefWidth="224.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
          <children>
-            <Button disable="true" mnemonicParsing="false" onAction="#SafeModeClicked" onMouseEntered="#HoverSafeMode" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Turvarežiim" />
+            <Button mnemonicParsing="false" onAction="#SafeModeClicked" onMouseEntered="#HoverSafeMode" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Turvarežiim" />
             <Button mnemonicParsing="false" onAction="#WinVerClicked" onMouseEntered="#HoverLegacyPanel" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Windowsi versioon" />
             <Button disable="true" mnemonicParsing="false" onAction="#CustomizeThemeClicked" onMouseEntered="#HoverCustomizeTheme" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Teema kohandamine" />
          </children>

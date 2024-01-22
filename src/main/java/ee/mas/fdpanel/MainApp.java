@@ -26,13 +26,15 @@ public class MainApp extends Application {
 
     public FlashDrive fd;
 
-    public String version = "0.2";
+    public String version = "0.3";
     public boolean isMas = false;
 
     public List<FlashDrive> drives = new ArrayList<>();
     private String alphabet = "abcdefghijklmnopqrstuvwxyz.,-/\\_";
 
     public String platform = "";
+
+    public static boolean safeMode = false;
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException, NoSuchAlgorithmException {
@@ -79,6 +81,15 @@ public class MainApp extends Application {
             alert.setContentText("Sisestage ja haakige mälupulk, seejärel vajutage \"OK\", et jätkata.");
             alert.showAndWait();
             ReloadDevices(true);
+        }
+        for (String par: getParameters().getRaw()) {
+            if (par.equals("--safemode")) {
+                safeMode = true;
+            }
+        }
+        if (safeMode) {
+            initSafeMode();
+            return;
         }
         initRootLayout();
         showFirstForm();
@@ -171,7 +182,7 @@ public class MainApp extends Application {
 
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
     private Stage getPrimaryStage() {
@@ -281,6 +292,32 @@ public class MainApp extends Application {
 
             AdditionalFeatures controller = loader.getController();
             controller.setMainApp(this);
+            dialogStage.show();
+        } catch (IOException | NoSuchAlgorithmException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void initSafeMode() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+
+            if (!this.platform.equals(new Verifile(System.getProperty("user.home") + "/.mas").MakeAttestation())) { return; }
+            loader.setLocation(MainApp.class.getResource("SafeMode.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog stage
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("Turvarežiim");
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            SafeMode controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setFd(this.fd);
+            controller.GatherInfo();
             dialogStage.show();
         } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());

@@ -96,7 +96,7 @@ public class AdditionalFeatures {
 
     @FXML
     private void SafeModeClicked() {
-
+        this.mainApp.initSafeMode();
     }
 
     @FXML

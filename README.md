@@ -23,6 +23,6 @@ Siin on list funktsionaalsusest, mida ma planeerin lisada. Enamik neist on lihts
     - Andmete värskendamine, mitme mälupulga tugi
 - Statistika vahekaart
     - Ringdiagramm erinevatest mälupulga kaustadest, mis kasutavad ruumi
-- Arendamine vahekaart (TBD)
+- Arendamine vahekaart
     - Uudiste lisamine/eemaldamine/muutmine
     - Esiletõstetud videote muutmine
