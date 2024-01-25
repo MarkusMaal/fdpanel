@@ -17,7 +17,7 @@
          <children>
             <Button mnemonicParsing="false" onAction="#SafeModeClicked" onMouseEntered="#HoverSafeMode" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Turvarežiim" />
             <Button mnemonicParsing="false" onAction="#WinVerClicked" onMouseEntered="#HoverLegacyPanel" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Windowsi versioon" />
-            <Button disable="true" mnemonicParsing="false" onAction="#CustomizeThemeClicked" onMouseEntered="#HoverCustomizeTheme" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Teema kohandamine" />
+            <Button mnemonicParsing="false" onAction="#CustomizeThemeClicked" onMouseEntered="#HoverCustomizeTheme" onMouseExited="#HoverDefault" prefHeight="30.0" prefWidth="220.0" text="Teema kohandamine" />
          </children>
          <opaqueInsets>
             <Insets />

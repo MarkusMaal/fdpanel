@@ -38,6 +38,13 @@ public class RootLayout {
             headerContainer.setBackground(new Background(BI));
         }
     }
+
+    public void setCustomHeader(String uri) {
+        headerContainer.setBackground(null);
+        BackgroundImage BI = new BackgroundImage(new Image("file://" + uri, -1, -1, false, true), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        headerContainer.setBackground(new Background(BI));
+    }
+
     @FXML
     private void initialize() {
     }

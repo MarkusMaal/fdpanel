@@ -124,6 +124,6 @@ public class AdditionalFeatures {
 
     @FXML
     private void CustomizeThemeClicked() {
-
+        mainApp.showThemeDialog();
     }
 }

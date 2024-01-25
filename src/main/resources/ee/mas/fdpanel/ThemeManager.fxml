@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="136.0" prefWidth="434.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.ThemeManager">
+   <children>
+      <FlowPane layoutX="23.0" layoutY="47.0" prefHeight="81.0" prefWidth="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0">
+         <children>
+            <Button disable="true" mnemonicParsing="false" prefWidth="200.0" text="Muuda tagaplaani värvi">
+               <FlowPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </FlowPane.margin>
+            </Button>
+            <Button disable="true" mnemonicParsing="false" prefHeight="24.0" prefWidth="200.0" text="Muuda esiplaani värvi">
+               <FlowPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </FlowPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#ReplaceHeader" prefWidth="200.0" text="Muuda taustapilti">
+               <FlowPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </FlowPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#LoadTheme" prefWidth="200.0" text="Laadi teema">
+               <FlowPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </FlowPane.margin>
+            </Button>
+         </children>
+      </FlowPane>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="197.0" layoutY="14.0" prefHeight="47.0" prefWidth="430.0" text="Teema" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -6,8 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -22,13 +22,16 @@ import java.util.List;
 
 public class MainApp extends Application {
     public Stage primaryStage;
-    private BorderPane rootLayout;
+
+    public RootLayout appRoot;
+
+    public BorderPane rootLayout;
 
     public InnerLayout mainWindow;
 
     public FlashDrive fd;
 
-    public String version = "0.3";
+    public String version = "0.4";
     public boolean isMas = false;
 
     public List<FlashDrive> drives = new ArrayList<>();
@@ -69,6 +72,7 @@ public class MainApp extends Application {
                 alert.showAndWait();
                 break;
         }
+        ReloadTheme();
         if (!this.platform.isEmpty()) {
             this.primaryStage = stage;
             this.primaryStage.setTitle("Markuse mälupulk");
@@ -98,7 +102,6 @@ public class MainApp extends Application {
             initSafeMode();
             return;
         }
-        ReloadTheme();
         initRootLayout();
         showFirstForm();
     }
@@ -173,6 +176,7 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         RootLayout controller = loader.getController();
         controller.setMainApp(this);
+        appRoot = controller;
         primaryStage.show();
     }
 
@@ -320,6 +324,28 @@ public class MainApp extends Application {
             controller.setMainApp(this);
             controller.setFd(this.fd);
             controller.GatherInfo();
+            dialogStage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showThemeDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("ThemeManager.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog stage
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("");
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ThemeManager controller = loader.getController();
+            controller.setMainApp(this);
             dialogStage.show();
         } catch (IOException e) {
             System.out.println(e.getMessage());
