@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="466.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.SafeMode">
+<AnchorPane fx:id="anchorPane" prefHeight="466.0" prefWidth="657.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.SafeMode">
     <SplitPane dividerPositions="0.6173228346456693" layoutX="168.0" layoutY="145.0" prefHeight="423.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
             <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" vbarPolicy="ALWAYS">
@@ -45,13 +45,13 @@
                      </Button>
                         </children>
                     </FlowPane>
-                    <Label layoutX="10.0" layoutY="226.0" prefHeight="25.0" prefWidth="190.0" text="Esiletõstetud videod" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="230.0">
+                    <Label layoutX="10.0" layoutY="247.0" prefHeight="25.0" prefWidth="190.0" text="Esiletõstetud videod" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="247.0">
                         <font>
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <Button fx:id="playButton" disable="true" layoutX="136.0" layoutY="381.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="26.0" prefWidth="100.0" text="Esita" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="380.0" />
-                    <ListView fx:id="videoHighlights" layoutX="5.0" layoutY="255.0" onKeyPressed="#enableDisablePlayButton" onMouseClicked="#enableDisablePlayButton" prefHeight="104.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="260.0" />
+                    <Button fx:id="playButton" disable="true" layoutX="129.0" layoutY="397.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="26.0" prefWidth="100.0" text="Esita" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="397.0" />
+                    <ListView fx:id="videoHighlights" layoutX="10.0" layoutY="277.0" onKeyPressed="#enableDisablePlayButton" onMouseClicked="#enableDisablePlayButton" prefHeight="104.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="277.0" />
                 </children>
             </AnchorPane>
         </items>

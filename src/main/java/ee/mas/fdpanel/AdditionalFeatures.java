@@ -32,6 +32,9 @@ public class AdditionalFeatures {
     @FXML
     private VBox previewContainer;
 
+    @FXML
+    private AnchorPane anchorPane;
+
     private MainApp mainApp;
 
     public void setMainApp(MainApp m) {this.mainApp = m;}
@@ -40,6 +43,10 @@ public class AdditionalFeatures {
     private void initialize() {
         this.ScaleImage();
         this.HoverDefault();
+        anchorPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            anchorPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
     }
 
     private void ScaleImage() {

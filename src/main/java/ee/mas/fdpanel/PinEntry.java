@@ -2,12 +2,17 @@ package ee.mas.fdpanel;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class PinEntry {
 
     @FXML
     private TextField pDsp;
+    @FXML
+    private AnchorPane anchorPane;
     private MainApp mainApp;
     private Stage dialogStage;
 
@@ -26,7 +31,10 @@ public class PinEntry {
 
     @FXML
     private void initialize() {
-
+        anchorPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            anchorPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
     }
     @FXML
     private void endClicked() {

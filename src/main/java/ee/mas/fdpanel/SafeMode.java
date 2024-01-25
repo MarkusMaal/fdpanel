@@ -9,9 +9,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,8 +45,14 @@ public class SafeMode {
     private Button playButton;
 
     @FXML
-    private void initialize() {
+    private AnchorPane anchorPane;
 
+    @FXML
+    private void initialize() {
+        anchorPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            anchorPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
     }
 
     public void GatherInfo() throws IOException {
@@ -63,9 +71,15 @@ public class SafeMode {
         StringTextConverter converter = new StringTextConverter();
         converter.convert(new RtfStreamSource(is));
         String extractedText = converter.getText();
+        boolean isFirst = true;
         for (String line: extractedText.split("\n")) {
-            Text t =  new Text(line + "\n");
+            Text t =  new Text(line.replace("·\t", "  · ") + "\n");
+            if (isFirst) {
+                t.setStyle("-fx-font-weight: bold");
+            }
+            t.setFill(mainApp.schemeFg);
             rtfDisplay.getChildren().add(t);
+            isFirst = false;
         }
         videoHighlights.setItems(this.videos);
     }

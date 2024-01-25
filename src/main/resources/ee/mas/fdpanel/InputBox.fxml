@@ -4,8 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="139.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.InputBox">
+<AnchorPane fx:id="anchorPane" prefHeight="139.0" prefWidth="428.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.InputBox">
    <children>
       <Label fx:id="topText" layoutX="14.0" layoutY="14.0" text="Teksti kohatäide" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0">
          <font>

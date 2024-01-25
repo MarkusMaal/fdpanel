@@ -17,14 +17,22 @@ public class RootLayout {
     @FXML
     private VBox headerContainer;
 
+    @FXML
+    private BorderPane rootPane;
+
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        rootPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            rootPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
         String home = System.getProperty("user.home");
         File masDir = new File(home + "/.mas/bg_common.png");
         mainApp.setMas(masDir.exists() && masDir.isFile());
         if (masDir.exists() && masDir.isFile() && mainApp.platform.equals("VERIFIED")) {
             BackgroundImage BI = new BackgroundImage(new Image("file://" + home + "/.mas/bg_common.png", mainApp.primaryStage.getWidth(), headerContainer.getHeight(), false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             headerContainer.setBackground(new Background(BI));
+
         } else {
             BackgroundImage BI = new BackgroundImage(new Image(String.valueOf(this.getClass().getResource("default_bg.png")), mainApp.primaryStage.getWidth(), headerContainer.getHeight(), false, true), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             headerContainer.setBackground(new Background(BI));

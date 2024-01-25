@@ -3,9 +3,11 @@ package ee.mas.fdpanel;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +21,10 @@ public class DriveChooser {
     public void setMainApp(MainApp m) {this.mainApp = m;}
 
     @FXML
-    ChoiceBox<String> drivePicker;
+    private ChoiceBox<String> drivePicker;
+
+    @FXML
+    private AnchorPane anchorPane;
 
 
     public void setDialogStage(Stage dialogStage) {
@@ -41,7 +46,10 @@ public class DriveChooser {
     }
     @FXML
     private void initialize() {
-
+        anchorPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            anchorPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
     }
 
     @FXML

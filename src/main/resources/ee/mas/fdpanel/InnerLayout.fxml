@@ -21,7 +21,7 @@
                           <items>
                             <ScrollPane fitToWidth="true" hbarPolicy="NEVER" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" vbarPolicy="ALWAYS">
                                  <content>
-                                    <TextFlow fx:id="rtfDisplay" layoutX="91.0" layoutY="111.0" prefHeight="421.0" prefWidth="382.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextFlow fx:id="rtfDisplay" layoutX="91.0" layoutY="111.0" prefHeight="421.0" prefWidth="382.0" styleClass="text-flow" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </content>
                               </ScrollPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -409,7 +409,7 @@
       </TabPane>
       <ProgressIndicator fx:id="spinner" maxHeight="424.0" maxWidth="719.0" prefHeight="424.0" prefWidth="719.0" scaleShape="false" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <effect>
-            <ColorAdjust brightness="-1.0" contrast="-1.0" hue="0.11" saturation="-1.0" />
+            <ColorAdjust brightness="0.57" contrast="-1.0" hue="-1.0" saturation="-1.0" />
          </effect>
          <cursor>
             <Cursor fx:constant="WAIT" />

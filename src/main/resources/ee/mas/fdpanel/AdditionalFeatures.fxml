@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="382.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.AdditionalFeatures">
+<AnchorPane fx:id="anchorPane" prefHeight="382.0" prefWidth="625.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.AdditionalFeatures">
    <children>
       <Label layoutX="22.0" layoutY="213.0" text="Lisafunktsioonid" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="10.0">
          <font>

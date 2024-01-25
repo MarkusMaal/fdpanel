@@ -3,7 +3,10 @@ package ee.mas.fdpanel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class InputBox {
     private MainApp mainApp;
@@ -21,6 +24,9 @@ public class InputBox {
     @FXML
     private Label topText;
 
+    @FXML
+    private AnchorPane anchorPane;
+
     private String value = null;
 
     @FXML
@@ -35,6 +41,14 @@ public class InputBox {
 
     public void setHeader(String text) {
         topText.setText(text);
+    }
+
+    @FXML
+    public void initialize() {
+        anchorPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            anchorPane.getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
     }
 
 }

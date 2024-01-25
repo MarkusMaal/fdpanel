@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -108,7 +110,6 @@ public class InnerLayout {
     }
     @FXML
     private void initialize() throws IOException {
-
         FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
         initialImage = qAppThumbnail.getImage();
@@ -217,9 +218,15 @@ public class InnerLayout {
         StringTextConverter converter = new StringTextConverter();
         converter.convert(new RtfStreamSource(is));
         String extractedText = converter.getText();
+        boolean firstLine = true;
         for (String line: extractedText.split("\n")) {
-            Text t =  new Text(line + "\n");
+            Text t =  new Text(line.replace("·\t", "  · ") + "\n");
+            t.setFill(mainApp.schemeFg);
+            if (firstLine) {
+                t.setStyle("-fx-font-weight: bold");
+            }
             rtfDisplay.getChildren().add(t);
+            firstLine = false;
         }
     }
 

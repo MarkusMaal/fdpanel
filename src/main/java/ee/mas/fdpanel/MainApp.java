@@ -8,12 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public class MainApp extends Application {
     public String platform = "";
 
     public static boolean safeMode = false;
+
+    public Color schemeBg;
+    public Color schemeFg;
+    public String style;
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException, NoSuchAlgorithmException {
@@ -92,6 +98,7 @@ public class MainApp extends Application {
             initSafeMode();
             return;
         }
+        ReloadTheme();
         initRootLayout();
         showFirstForm();
     }
@@ -337,5 +344,99 @@ public class MainApp extends Application {
         }
 
         return byteArray;
+    }
+
+    public void ReloadTheme() throws NoSuchAlgorithmException, IOException {
+        String mas_root = System.getProperty("user.home") + "/.mas";
+        String vf_result = new Verifile(mas_root).MakeAttestation();
+        if (vf_result.equals("VERIFIED")) {
+            File schemeFile = new File(mas_root + "/scheme.cfg");
+            String colorData = "";
+            if (!schemeFile.exists() || schemeFile.isDirectory()) {
+                return;
+            }
+            FileInputStream fstream;
+            try {
+                fstream = new FileInputStream(schemeFile.getAbsoluteFile());
+            } catch (FileNotFoundException ignored) { return; }
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream, StandardCharsets.UTF_8));
+
+            try {
+                colorData  = br.readLine();
+                fstream.close();
+            } catch (IOException ignored) {}
+
+            String[] bgs = colorData.split(";")[0].split(":");
+            String[] fgs = colorData.split(";")[1].split(":");
+            this.schemeBg = Color.rgb(Integer.parseInt(bgs[0]),
+                    Integer.parseInt(bgs[1]),
+                    Integer.parseInt(bgs[2]));
+            this.schemeFg = Color.rgb(Integer.parseInt(fgs[0]),
+                    Integer.parseInt(fgs[1]),
+                    Integer.parseInt(fgs[2]));
+            this.StyleFactory();
+        }
+    }
+
+    private String GetRgbString(Color rgb) {
+        return "rgb(" + (int)(255.0 * rgb.getRed()) + ", " + (int)(255.0 * rgb.getGreen()) + ", " + (int)(255.0 * rgb.getBlue()) +  ")";
+    }
+
+    private String InsertBgFg(String selector, Color bg, Color fg, boolean fxBase) {
+        StringBuilder bgStr = new StringBuilder();
+        if (!fxBase) {
+            bgStr.append(selector).append("\n");
+            bgStr.append("{").append("\n");
+            bgStr.append("-fx-background-color: " + GetRgbString(bg) + ";").append("\n");
+            bgStr.append("-fx-text-fill: " + GetRgbString(fg) + ";").append("\n");
+            bgStr.append("}").append("\n");
+        } else {
+            bgStr.append(selector).append("\n");
+            bgStr.append("{").append("\n");
+            bgStr.append("-fx-background: " + GetRgbString(bg) + ";").append("\n");
+            bgStr.append("-fx-base: " + GetRgbString(fg) + ";").append("\n");
+            bgStr.append("}").append("\n");
+        }
+        return bgStr.toString();
+    }
+
+    private String InsertBg(String selector, Color bg, boolean bgColor) {
+        StringBuilder bgStr = new StringBuilder();
+        if (bgColor) {
+            bgStr.append(selector).append("\n");
+            bgStr.append("{").append("\n");
+            bgStr.append("-fx-background-color: " + GetRgbString(bg)  +  ";").append("\n");
+            bgStr.append("}").append("\n");
+        } else {
+            bgStr.append(selector).append("\n");
+            bgStr.append("{").append("\n");
+            bgStr.append("-fx-background: " + GetRgbString(bg)  +  ";").append("\n");
+            bgStr.append("}").append("\n");
+        }
+        return bgStr.toString();
+    }
+    private String InsertTxtFill(String selector, Color fg) {
+        StringBuilder fgStr = new StringBuilder();
+        fgStr.append(selector).append("\n");
+        fgStr.append("{").append("\n");
+        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";").append("\n");
+        fgStr.append("}").append("\n");
+        return fgStr.toString();
+    }
+
+    public void StyleFactory() throws FileNotFoundException {
+        StringBuilder styleFct = new StringBuilder();
+        styleFct.append(InsertTxtFill(".tab .tab-label", this.schemeFg));
+        styleFct.append(InsertBg(".tab:top", this.schemeBg, true));
+        styleFct.append(InsertBg(".control-buttons-tab", this.schemeBg, true));
+        styleFct.append(InsertBg(".tab-content-area", this.schemeBg, true));
+        styleFct.append(InsertBgFg(".root", this.schemeBg, this.schemeFg, true));
+        styleFct.append(InsertBgFg(".list-view .list-cell", this.schemeBg, this.schemeFg, false));
+        styleFct.append(InsertBgFg(".list-view .list-cell:selected", this.schemeFg, this.schemeBg, false));
+
+        PrintStream printStr = new PrintStream(new File("/tmp/fdpanel_style.css"));
+        Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
+        printStr.print(styleFct);
+        printStr.flush();
     }
 }
