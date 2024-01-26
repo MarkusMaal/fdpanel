@@ -335,6 +335,50 @@ public class MainApp extends Application {
         }
     }
 
+    public void showBackupMan() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("BackupManager.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog stage
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("Varundushaldur");
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            BackupManager controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setDialogStage(dialogStage);
+            dialogStage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void showPreview(String uri) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("PreviewImg.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog stage
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Eelvaade");
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            PreviewImg controller = loader.getController();
+            controller.setStage(dialogStage);
+            controller.setImage(uri);
+            dialogStage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void initSafeMode() {
         try {
             FXMLLoader loader = new FXMLLoader();

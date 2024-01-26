@@ -200,7 +200,7 @@
                                       <items>
                                         <AnchorPane fx:id="thumbnailParentNode" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
-                                                <ImageView fx:id="qAppThumbnail" fitHeight="150.0" fitWidth="250.0" layoutX="137.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <ImageView fx:id="qAppThumbnail" fitHeight="150.0" fitWidth="250.0" layoutX="137.0" layoutY="31.0" onMouseClicked="#PreviewMe" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <image>
                                                       <Image url="@Info.png" />
                                                    </image>
@@ -315,7 +315,7 @@
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Varundamishaldur">
+                              <Button disable="true" mnemonicParsing="false" onAction="#BackManClicked" prefHeight="26.0" prefWidth="200.0" text="Varundamishaldur">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>

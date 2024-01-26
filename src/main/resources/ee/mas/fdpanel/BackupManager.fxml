@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="419.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.BackupManager">
+   <children>
+      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="565.0" text="Varundamishaldur" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <TableView layoutX="10.0" layoutY="84.0" prefHeight="290.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="84.0">
+         <columns>
+            <TableColumn prefWidth="405.0" text="Nimi" />
+            <TableColumn minWidth="0.0" prefWidth="121.0" text="Maht (GB)" />
+         </columns></TableView>
+      <Label fx:id="backupLocLabel" layoutX="10.0" layoutY="55.0" prefHeight="16.0" prefWidth="580.0" text="Varukoopiate asukoht: undefined" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="55.0" />
+      <Button disable="true" layoutX="10.0" layoutY="381.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="150.0" text="Haagi varukoopia" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+      <Button layoutX="524.0" layoutY="385.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Uus" textAlignment="RIGHT" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Button disable="true" layoutX="401.0" layoutY="385.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="100.0" text="Taasta" textAlignment="RIGHT" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="120.0" />
+      <Button disable="true" layoutX="307.0" layoutY="385.0" mnemonicParsing="false" prefWidth="100.0" text="Kustuta" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="230.0" />
+   </children>
+</AnchorPane>

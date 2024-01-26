@@ -456,6 +456,11 @@ public class InnerLayout {
     }
 
     @FXML
+    private void PreviewMe() {
+        mainApp.showPreview(fd.GetMount() + "/markuse asjad/Kiirrakendused/" + qAppName.getText().replace(" (Wine)", "") + "/" + qAppName.getText().replace(" (Wine)", "") + "ScreenShot.bmp");
+    }
+
+    @FXML
     private void ReAttestateVfile() {
         try {
             vfStatusLabel.setText("Verifile olek: " + new Verifile(this.home + "/.mas").MakeAttestation());
@@ -608,6 +613,24 @@ public class InnerLayout {
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Runtime error: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void BackManClicked() {
+        boolean correctPin = false;
+        try {
+            correctPin = this.fd.VerifyPin(mainApp.showPinDialog("Sisestage praegune PIN kood"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        if (!correctPin) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Vale PIN kood!");
+            alert.showAndWait();
+            return;
+        }
+        mainApp.showBackupMan();
     }
 
     @FXML
