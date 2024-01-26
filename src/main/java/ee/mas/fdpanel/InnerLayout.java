@@ -198,7 +198,9 @@ public class InnerLayout {
                         new PieChart.Data("PS2 mängud (" + fd.GetNiceSize(result.get("PS2 mängud")) + ")", result.get("PS2 mängud")),
                         new PieChart.Data("Muud asjad (" + fd.GetNiceSize(misc_size) + ")", misc_size),
                         new PieChart.Data("Vaba ruum (" + fd.GetNiceSize(free_space) + ")", free_space));
+                statChart.setLabelsVisible(false);
                 statChart.setTitle("Ruumi kasutuse statistika");
+                statChart.setLabelLineLength(0);
                 statChart.setData(pieChartData);
                 pieChartData.getLast().getNode().setStyle("-fx-pie-color: #fff0;");
                 editionLabel.setText(fd.GetEdition());
@@ -228,6 +230,10 @@ public class InnerLayout {
             rtfDisplay.getChildren().add(t);
             firstLine = false;
         }
+    }
+
+    public void RefreshNews() {
+        this.refreshTopic();
     }
 
     @FXML

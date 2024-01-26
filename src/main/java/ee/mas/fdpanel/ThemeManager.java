@@ -2,7 +2,9 @@ package ee.mas.fdpanel;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -20,6 +22,8 @@ public class ThemeManager {
 
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private Label label;
     @FXML
     public void initialize() {
         InitTheme();
@@ -69,5 +73,54 @@ public class ThemeManager {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void ReplaceBg() {
+        String numStr = anchorPane.getBackground().getFills().getLast().getFill().toString().replace("0x", "");
+
+        int red = Integer.decode("0x" + numStr.substring(0, 2));
+        int green = Integer.decode("0x" + numStr.substring(2, 4));
+        int blue = Integer.decode("0x" + numStr.substring(4, 6));
+
+        Color newColor = mainApp.showColorPickerDialog(Color.rgb(red, green, blue));
+        if (newColor == null) {
+            return;
+        }
+        mainApp.SetCustomBg(newColor);
+
+        mainApp.primaryStage.getScene().getStylesheets().clear();
+        mainApp.mainWindow.RefreshNews();
+        mainApp.primaryStage.getScene().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            mainApp.primaryStage.getScene().getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
+        anchorPane.getStylesheets().clear();
+        mainApp.appRoot.setCustomHeader(System.getProperty("user.home") + "/.mas/bg_common.png");
+        InitTheme();
+    }
+
+    @FXML
+    private void ReplaceFg() {
+        String numStr = label.getTextFill().toString().replace("0x", "");
+
+        int red = Integer.decode("0x" + numStr.substring(0, 2));
+        int green = Integer.decode("0x" + numStr.substring(2, 4));
+        int blue = Integer.decode("0x" + numStr.substring(4, 6));
+
+        Color newColor = mainApp.showColorPickerDialog(Color.rgb(red, green, blue));
+        if (newColor == null) {
+            return;
+        }
+        mainApp.SetCustomFg(newColor);
+
+        mainApp.primaryStage.getScene().getStylesheets().clear();
+        mainApp.primaryStage.getScene().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        if (new File("/tmp/fdpanel_style.css").exists()) {
+            mainApp.primaryStage.getScene().getStylesheets().add("file:///tmp/fdpanel_style.css");
+        }
+        anchorPane.getStylesheets().clear();
+        mainApp.appRoot.setCustomHeader(System.getProperty("user.home") + "/.mas/bg_common.png");
+        InitTheme();
     }
 }

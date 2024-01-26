@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="531.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ee.mas.fdpanel.InnerLayout">
    <children>
-      <TabPane fx:id="primaryTabPane" layoutX="73.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="primaryTabPane" layoutX="73.0" layoutY="36.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Uudised">
             <content>
@@ -34,17 +34,17 @@
                                     <Label fx:id="newsCounterLabel" layoutX="10.0" layoutY="41.0" text="Uudis 1/5" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0" />
                                     <FlowPane layoutX="5.0" layoutY="78.0" prefHeight="137.0" prefWidth="190.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="80.0">
                                        <children>
-                                          <Button onAction="#previousTopic" prefHeight="26.0" prefWidth="100.0" text="&lt; _Eelmine">
+                                          <Button onAction="#previousTopic" prefHeight="26.0" prefWidth="120.0" text="&lt; _Eelmine">
                                              <FlowPane.margin>
                                                 <Insets left="10.0" top="10.0" />
                                              </FlowPane.margin>
                                           </Button>
-                                          <Button onAction="#nextTopic" prefHeight="26.0" prefWidth="100.0" text="_Järgmine &gt;">
+                                          <Button onAction="#nextTopic" prefHeight="26.0" prefWidth="120.0" text="_Järgmine &gt;">
                                              <FlowPane.margin>
                                                 <Insets left="10.0" top="10.0" />
                                              </FlowPane.margin>
                                           </Button>
-                                          <Button mnemonicParsing="false" onAction="#refreshTopic" prefHeight="26.0" prefWidth="100.0" text="Laadi uuesti">
+                                          <Button mnemonicParsing="false" onAction="#refreshTopic" prefHeight="26.0" prefWidth="120.0" text="Laadi uuesti">
                                              <FlowPane.margin>
                                                 <Insets left="10.0" top="10.0" />
                                              </FlowPane.margin>
@@ -73,57 +73,57 @@
                         <Label layoutX="10.0" layoutY="14.0" text="Vali kasutaja" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <FlowPane layoutX="14.0" layoutY="75.0" prefHeight="160.0" prefWidth="580.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="75.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#onAllClicked" prefHeight="26.0" prefWidth="150.0" text="(kõik)">
+                              <Button mnemonicParsing="false" onAction="#onAllClicked" prefHeight="26.0" prefWidth="180.0" text="(kõik)">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onHelpClicked" prefHeight="26.0" prefWidth="150.0" text="Abi">
+                              <Button mnemonicParsing="false" onAction="#onHelpClicked" prefHeight="26.0" prefWidth="180.0" text="Abi">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onVideosClicked" prefHeight="26.0" prefWidth="150.0" text="Minu videod">
+                              <Button mnemonicParsing="false" onAction="#onVideosClicked" prefHeight="26.0" prefWidth="180.0" text="Minu videod">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onOtherClicked" prefHeight="26.0" prefWidth="150.0" text="Muud asjad">
+                              <Button mnemonicParsing="false" onAction="#onOtherClicked" prefHeight="26.0" prefWidth="180.0" text="Muud asjad">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onMusicClicked" prefHeight="26.0" prefWidth="150.0" text="Muusika">
+                              <Button mnemonicParsing="false" onAction="#onMusicClicked" prefHeight="26.0" prefWidth="180.0" text="Muusika">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onInstallableClicked" prefHeight="26.0" prefWidth="150.0" text="Paigaldatavad failid">
+                              <Button mnemonicParsing="false" onAction="#onInstallableClicked" prefHeight="26.0" prefWidth="180.0" text="Paigaldatavad failid">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onPicsClicked" prefHeight="26.0" prefWidth="150.0" text="Pildid">
+                              <Button mnemonicParsing="false" onAction="#onPicsClicked" prefHeight="26.0" prefWidth="180.0" text="Pildid">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onPowerPointClicked" prefHeight="26.0" prefWidth="150.0" text="PowerPoint">
+                              <Button mnemonicParsing="false" onAction="#onPowerPointClicked" prefHeight="26.0" prefWidth="180.0" text="PowerPoint">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onPptTempsClicked" prefHeight="26.0" prefWidth="150.0" text="PowerPointi mallid">
+                              <Button mnemonicParsing="false" onAction="#onPptTempsClicked" prefHeight="26.0" prefWidth="180.0" text="PowerPointi mallid">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onTextClicked" prefHeight="26.0" prefWidth="150.0" text="Tekst">
+                              <Button mnemonicParsing="false" onAction="#onTextClicked" prefHeight="26.0" prefWidth="180.0" text="Tekst">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#onWordClicked" prefHeight="26.0" prefWidth="150.0" text="Word">
+                              <Button mnemonicParsing="false" onAction="#onWordClicked" prefHeight="26.0" prefWidth="180.0" text="Word">
                                  <FlowPane.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </FlowPane.margin>
@@ -295,37 +295,37 @@
                         </Label>
                         <FlowPane alignment="BASELINE_CENTER" layoutX="1.0" layoutY="306.0" orientation="VERTICAL" prefHeight="112.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="311.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#SetName" prefHeight="26.0" prefWidth="180.0" text="Muuda mälupulga nime">
+                              <Button mnemonicParsing="false" onAction="#SetName" prefHeight="26.0" prefWidth="200.0" text="Muuda mälupulga nime">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button fx:id="unsecurePinButton" mnemonicParsing="false" onAction="#UnsecureConversion" prefHeight="26.0" prefWidth="180.0" text="Ebaturvaline PIN kood">
+                              <Button fx:id="unsecurePinButton" mnemonicParsing="false" onAction="#UnsecureConversion" prefHeight="26.0" prefWidth="200.0" text="Ebaturvaline PIN kood">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#ChangePin" prefHeight="26.0" prefWidth="180.0" text="Muuda PIN koodi">
+                              <Button mnemonicParsing="false" onAction="#ChangePin" prefHeight="26.0" prefWidth="200.0" text="Muuda PIN koodi">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Väljaande teisendus">
+                              <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Väljaande teisendus">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="180.0" text="Varundamishaldur">
+                              <Button disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Varundamishaldur">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#OpenExtras" prefHeight="26.0" prefWidth="180.0" text="Lisafunktsioonid">
+                              <Button mnemonicParsing="false" onAction="#OpenExtras" prefHeight="26.0" prefWidth="200.0" text="Lisafunktsioonid">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#reloadDevices" prefHeight="26.0" prefWidth="180.0" text="Värskenda andmed">
+                              <Button mnemonicParsing="false" onAction="#reloadDevices" prefHeight="26.0" prefWidth="200.0" text="Värskenda andmed">
                                  <FlowPane.margin>
                                     <Insets right="10.0" top="10.0" />
                                  </FlowPane.margin>
@@ -354,7 +354,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="vfStatusLabel" layoutX="10.0" layoutY="360.0" text="Verifile olek: UNLOADED" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="360.0" />
-                        <Button fx:id="integrityCheckButton" disable="true" layoutX="10.0" layoutY="390.0" mnemonicParsing="false" onAction="#ReAttestateVfile" prefWidth="160.0" text="Kontrolli terviklikkust" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="390.0" />
+                        <Button fx:id="integrityCheckButton" disable="true" layoutX="10.0" layoutY="390.0" mnemonicParsing="false" onAction="#ReAttestateVfile" prefHeight="24.0" prefWidth="200.0" text="Kontrolli terviklikkust" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="390.0" />
                         <Button fx:id="unlockDevButton" layoutX="555.0" layoutY="23.0" mnemonicParsing="false" onAction="#PinTest" prefHeight="26.0" prefWidth="150.0" text="Lukusta lahti" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
                         <Label layoutX="14.0" layoutY="14.0" text="Esiletõstetud videod" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0">
                            <font>
@@ -407,9 +407,9 @@
             </Tab>
         </tabs>
       </TabPane>
-      <ProgressIndicator fx:id="spinner" maxHeight="424.0" maxWidth="719.0" prefHeight="424.0" prefWidth="719.0" scaleShape="false" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+      <ProgressIndicator fx:id="spinner" maxHeight="424.0" maxWidth="719.0" prefHeight="424.0" prefWidth="719.0" scaleShape="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
          <effect>
-            <ColorAdjust brightness="0.57" contrast="-1.0" hue="-1.0" saturation="-1.0" />
+            <ColorAdjust saturation="-1.0" />
          </effect>
          <cursor>
             <Cursor fx:constant="WAIT" />
@@ -418,7 +418,7 @@
             <Insets bottom="350.0" />
          </padding>
       </ProgressIndicator>
-      <Label fx:id="gettingInfoLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="152.0" prefHeight="33.0" prefWidth="600.0" text="Andmete kogumine..." textAlignment="CENTER" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="152.0">
+      <Label fx:id="gettingInfoLabel" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="152.0" prefHeight="33.0" prefWidth="600.0" text="Andmete kogumine..." textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="152.0">
          <cursor>
             <Cursor fx:constant="WAIT" />
          </cursor>

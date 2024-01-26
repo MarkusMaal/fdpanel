@@ -231,6 +231,35 @@ public class MainApp extends Application {
         }
     }
 
+    public Color showColorPickerDialog(Color defaultColor) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("ColorChooser.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.centerOnScreen();
+            dialogStage.setTitle("Vali värv");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            ColorChooser controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setMainApp(this);
+            controller.SetColor(defaultColor);
+            dialogStage.showAndWait();
+            if (controller.DialogResultOK) {
+                return controller.GetColor();
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String showPinDialog(String message) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -404,6 +433,24 @@ public class MainApp extends Application {
         }
     }
 
+    public void SetCustomBg(Color bg) {
+        this.schemeBg = bg;
+        try {
+            this.StyleFactory();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void SetCustomFg(Color fg) {
+        this.schemeFg = fg;
+        try {
+            this.StyleFactory();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String GetRgbString(Color rgb) {
         return "rgb(" + (int)(255.0 * rgb.getRed()) + ", " + (int)(255.0 * rgb.getGreen()) + ", " + (int)(255.0 * rgb.getBlue()) +  ")";
     }
@@ -449,17 +496,48 @@ public class MainApp extends Application {
         fgStr.append("}").append("\n");
         return fgStr.toString();
     }
+    private String StyleCheckBox(Color fg) {
+        StringBuilder fgStr = new StringBuilder();
+        fgStr.append(".check-box").append("\n");
+        fgStr.append("{").append("\n");
+        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";").append("\n");
+        fgStr.append("-mark-color: " + GetRgbString(fg)  +  ";").append("\n");
+        fgStr.append("}").append("\n");
+        fgStr.append(".check-box:selected > .box > .mark,\n").append(".check-box:indeterminate  > .box > .mark").append("\n");
+        fgStr.append("{").append("\n");
+        fgStr.append("-fx-background-color: " + GetRgbString(fg)  +  ";").append("\n");
+        fgStr.append("}").append("\n");
+        return fgStr.toString();
+    }
+
+    private Color Brighten(Color src) {
+        int blue = (int)(src.getBlue() * 255.0) + 25;
+        int red = (int)(src.getRed() * 255.0) + 25;
+        int green = (int)(src.getGreen() * 255.0) + 25;
+        if (red > 255) { red -= 50; }
+        if (green > 255) { green -= 50; }
+        if (blue > 255) { blue -= 50; }
+        return Color.rgb(red, green, blue);
+    }
 
     public void StyleFactory() throws FileNotFoundException {
         StringBuilder styleFct = new StringBuilder();
         styleFct.append(InsertTxtFill(".tab .tab-label", this.schemeFg));
+        styleFct.append(InsertBg(".tab-pane *.tab-header-background", this.schemeBg, true));
         styleFct.append(InsertBg(".tab:top", this.schemeBg, true));
         styleFct.append(InsertBg(".control-buttons-tab", this.schemeBg, true));
         styleFct.append(InsertBg(".tab-content-area", this.schemeBg, true));
-        styleFct.append(InsertBgFg(".root", this.schemeBg, this.schemeFg, true));
+        styleFct.append(InsertBg(".tab:selected", Brighten(this.schemeBg), true));
+        styleFct.append(InsertBgFg(".root", this.schemeBg, this.schemeBg, true));
         styleFct.append(InsertBgFg(".list-view .list-cell", this.schemeBg, this.schemeFg, false));
         styleFct.append(InsertBgFg(".list-view .list-cell:selected", this.schemeFg, this.schemeBg, false));
+        styleFct.append(InsertTxtFill(".label", this.schemeFg));
+        styleFct.append(InsertTxtFill(".button", this.schemeFg));
+        styleFct.append(StyleCheckBox(this.schemeFg));
 
+        styleFct.append(".tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {\n" +
+                "    -fx-border-color: transparent;\n" +
+                "}");
         PrintStream printStr = new PrintStream(new File("/tmp/fdpanel_style.css"));
         Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
         printStr.print(styleFct);
