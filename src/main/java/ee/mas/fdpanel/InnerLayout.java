@@ -20,6 +20,10 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -623,6 +627,33 @@ public class InnerLayout {
         }
         String flashName = mainApp.showInputBox("Sisesta uus mälupulga nimi");
         this.fd.SetName(flashName);
+    }
+
+    @FXML
+    private void ConvertEdition() throws IOException {
+        boolean correctPin = false;
+        try {
+            correctPin = this.fd.VerifyPin(mainApp.showPinDialog("Sisestage praegune PIN kood"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        if (!correctPin) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Mälupulga juhtpaneel");
+            alert.setHeaderText("Vale PIN kood!");
+            alert.showAndWait();
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Väljaande teisendus");
+        alert.setHeaderText("Programm sulgub nüüd");
+        alert.setContentText("Väljaande teisendamiseks käivitame skripti ja sulgeme mälupulga programmi");
+        alert.showAndWait();
+        File f = new File(getClass().getResource("convert.sh").getFile());
+        Files.copy(Path.of(f.getAbsolutePath()), Path.of(this.fd.GetMount() + "/E_INFO/convert.sh"), StandardCopyOption.REPLACE_EXISTING);
+        Runtime rt = Runtime.getRuntime();
+        rt.exec("konsole -e bash " + this.fd.GetMount() + "/E_INFO/convert.sh");
+        System.exit(0);
     }
 
     @FXML

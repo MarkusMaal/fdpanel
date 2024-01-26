@@ -458,17 +458,17 @@ public class MainApp extends Application {
     private String InsertBgFg(String selector, Color bg, Color fg, boolean fxBase) {
         StringBuilder bgStr = new StringBuilder();
         if (!fxBase) {
-            bgStr.append(selector).append("\n");
-            bgStr.append("{").append("\n");
-            bgStr.append("-fx-background-color: " + GetRgbString(bg) + ";").append("\n");
-            bgStr.append("-fx-text-fill: " + GetRgbString(fg) + ";").append("\n");
-            bgStr.append("}").append("\n");
+            bgStr.append(selector);
+            bgStr.append("{");
+            bgStr.append("-fx-background-color: " + GetRgbString(bg) + ";");
+            bgStr.append("-fx-text-fill: " + GetRgbString(fg) + ";");
+            bgStr.append("}");
         } else {
-            bgStr.append(selector).append("\n");
-            bgStr.append("{").append("\n");
-            bgStr.append("-fx-background: " + GetRgbString(bg) + ";").append("\n");
-            bgStr.append("-fx-base: " + GetRgbString(fg) + ";").append("\n");
-            bgStr.append("}").append("\n");
+            bgStr.append(selector);
+            bgStr.append("{");
+            bgStr.append("-fx-background: " + GetRgbString(bg) + ";");
+            bgStr.append("-fx-base: " + GetRgbString(fg) + ";");
+            bgStr.append("}");
         }
         return bgStr.toString();
     }
@@ -476,37 +476,37 @@ public class MainApp extends Application {
     private String InsertBg(String selector, Color bg, boolean bgColor) {
         StringBuilder bgStr = new StringBuilder();
         if (bgColor) {
-            bgStr.append(selector).append("\n");
-            bgStr.append("{").append("\n");
-            bgStr.append("-fx-background-color: " + GetRgbString(bg)  +  ";").append("\n");
-            bgStr.append("}").append("\n");
+            bgStr.append(selector);
+            bgStr.append("{");
+            bgStr.append("-fx-background-color: " + GetRgbString(bg)  +  ";");
+            bgStr.append("}");
         } else {
-            bgStr.append(selector).append("\n");
-            bgStr.append("{").append("\n");
-            bgStr.append("-fx-background: " + GetRgbString(bg)  +  ";").append("\n");
-            bgStr.append("}").append("\n");
+            bgStr.append(selector);
+            bgStr.append("{");
+            bgStr.append("-fx-background: " + GetRgbString(bg)  +  ";");
+            bgStr.append("}");
         }
         return bgStr.toString();
     }
     private String InsertTxtFill(String selector, Color fg) {
         StringBuilder fgStr = new StringBuilder();
-        fgStr.append(selector).append("\n");
-        fgStr.append("{").append("\n");
-        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";").append("\n");
-        fgStr.append("}").append("\n");
+        fgStr.append(selector);
+        fgStr.append("{");
+        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";");
+        fgStr.append("}");
         return fgStr.toString();
     }
     private String StyleCheckBox(Color fg) {
         StringBuilder fgStr = new StringBuilder();
-        fgStr.append(".check-box").append("\n");
-        fgStr.append("{").append("\n");
-        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";").append("\n");
-        fgStr.append("-mark-color: " + GetRgbString(fg)  +  ";").append("\n");
-        fgStr.append("}").append("\n");
-        fgStr.append(".check-box:selected > .box > .mark,\n").append(".check-box:indeterminate  > .box > .mark").append("\n");
-        fgStr.append("{").append("\n");
-        fgStr.append("-fx-background-color: " + GetRgbString(fg)  +  ";").append("\n");
-        fgStr.append("}").append("\n");
+        fgStr.append(".check-box");
+        fgStr.append("{");
+        fgStr.append("-fx-text-fill: " + GetRgbString(fg)  +  ";");
+        fgStr.append("-mark-color: " + GetRgbString(fg)  +  ";");
+        fgStr.append("}");
+        fgStr.append(".check-box:selected > .box > .mark,").append(".check-box:indeterminate  > .box > .mark");
+        fgStr.append("{");
+        fgStr.append("-fx-background-color: " + GetRgbString(fg)  +  ";");
+        fgStr.append("}");
         return fgStr.toString();
     }
 
@@ -535,9 +535,9 @@ public class MainApp extends Application {
         styleFct.append(InsertTxtFill(".button", this.schemeFg));
         styleFct.append(StyleCheckBox(this.schemeFg));
 
-        styleFct.append(".tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {\n" +
-                "    -fx-border-color: transparent;\n" +
-                "}");
+        styleFct.append(".tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {")
+                .append("-fx-border-color: transparent;")
+                .append("}");
         PrintStream printStr = new PrintStream(new File("/tmp/fdpanel_style.css"));
         Runtime.getRuntime().addShutdownHook(new Thread(printStr::close));
         printStr.print(styleFct);

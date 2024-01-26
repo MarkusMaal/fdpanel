@@ -19,7 +19,7 @@ Siin on list funktsionaalsusest, mida ma planeerin lisada. Enamik neist on lihts
 - Haldamine vahekaart
     - Info mälupulga ja juhtpaneeli kohta
     - Erinevad seadistused mälupulga juhtpaneeli jaoks
-    - (TBD) Haldamisfunktsioonid, sh mälupulga nime muutmine, PIN-koodi muutmine, varundamishaldur, lisafunktsioonid (nt teema muutmine, turvarežiim)
+    - Haldamisfunktsioonid, sh mälupulga nime muutmine, PIN-koodi muutmine, varundamishaldur (TBD), lisafunktsioonid (nt teema muutmine, turvarežiim)
     - Andmete värskendamine, mitme mälupulga tugi
 - Statistika vahekaart
     - Ringdiagramm erinevatest mälupulga kaustadest, mis kasutavad ruumi
