@@ -114,13 +114,18 @@ public class InnerLayout {
     }
     @FXML
     private void initialize() throws IOException {
-        FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
-        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
         initialImage = qAppThumbnail.getImage();
-        String strLine = br.readLine();
-        //Close the input stream
-        fstream.close();
-        autorunCheck.selectedProperty().set(strLine.contains("AutoRun=true"));
+        if (Files.exists(Path.of(this.home + "/.mas/settings2.sf"))) {
+            FileInputStream fstream = new FileInputStream(this.home + "/.mas/settings2.sf");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String strLine = br.readLine();
+            //Close the input stream
+            fstream.close();
+            autorunCheck.selectedProperty().set(strLine.contains("AutoRun=true"));
+        } else {
+            autorunCheck.selectedProperty().set(false);
+            autorunCheck.setDisable(true);
+        }
     }
 
     public void GatherInfo() throws IOException {
